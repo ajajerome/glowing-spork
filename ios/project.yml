@@ -1,0 +1,39 @@
+name: Learnfotball
+options:
+  minimumXcodeGenVersion: 2.33.0
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.learnfotball
+    DEVELOPMENT_TEAM: MW98Z2Q68W
+    SWIFT_VERSION: 5.0
+    TARGETED_DEVICE_FAMILY: 1
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 0.1.0
+targets:
+  Learnfotball:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: Resources
+    settings:
+      base:
+        INFOPLIST_FILE: Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    scheme:
+      gatherCoverageData: false
+    info:
+      path: Info.plist
+      properties:
+        CFBundleName: Learnfotball
+        CFBundleDisplayName: Learnfotball
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UILaunchScreen: {}
