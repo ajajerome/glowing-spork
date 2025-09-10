@@ -1,0 +1,44 @@
+name: iOS CI (TestFlight)
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-testflight:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Fastlane
+        run: |
+          gem install fastlane --no-document
+
+      - name: Import code signing assets
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.SIGNING_CERT_P12 }}
+          p12-password: ${{ secrets.SIGNING_CERT_PASSWORD }}
+          profile-base64: ${{ secrets.PROVISIONING_PROFILE }}
+
+      - name: Build and upload to TestFlight
+        env:
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          BUNDLE_ID: ${{ secrets.BUNDLE_ID }}
+          SCHEME: ${{ secrets.SCHEME }}
+          WORKSPACE: ${{ secrets.WORKSPACE }}
+        run: fastlane ci
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: |
+            ./build/**/*.ipa
+            ./*.ipa
+            ./fastlane/report.xml
+
