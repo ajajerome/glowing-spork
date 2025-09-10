@@ -10,9 +10,30 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Locate Xcode project/workspace
+        run: |
+          set -e
+          FILE=$(find . -maxdepth 3 -type f \( -name "*.xcworkspace" -o -name "*.xcodeproj" \) | head -n1)
+          if [ -z "$FILE" ]; then
+            echo "No Xcode project or workspace found in repository" >&2
+            exit 1
+          fi
+          DIR=$(dirname "$FILE")
+          echo "Found: $FILE"
+          echo "WORKING_DIR=$DIR" >> $GITHUB_ENV
       - name: Install Fastlane
-        run: gem install fastlane --no-document
+        run: |
+          gem install fastlane --no-document
+          gem install xcpretty --no-document
+      - name: CocoaPods install (if Podfile exists)
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ -f "Podfile" ]; then
+            sudo gem install cocoapods --no-document || brew install cocoapods
+            pod install --repo-update
+          fi
       - name: Build simulator .app
+        working-directory: ${{ env.WORKING_DIR }}
         run: fastlane sim
       - name: Upload simulator artifact
         uses: actions/upload-artifact@v4
@@ -28,8 +49,28 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Locate Xcode project/workspace
+        run: |
+          set -e
+          FILE=$(find . -maxdepth 3 -type f \( -name "*.xcworkspace" -o -name "*.xcodeproj" \) | head -n1)
+          if [ -z "$FILE" ]; then
+            echo "No Xcode project or workspace found in repository" >&2
+            exit 1
+          fi
+          DIR=$(dirname "$FILE")
+          echo "Found: $FILE"
+          echo "WORKING_DIR=$DIR" >> $GITHUB_ENV
       - name: Install Fastlane
-        run: gem install fastlane --no-document
+        run: |
+          gem install fastlane --no-document
+          gem install xcpretty --no-document
+      - name: CocoaPods install (if Podfile exists)
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          if [ -f "Podfile" ]; then
+            sudo gem install cocoapods --no-document || brew install cocoapods
+            pod install --repo-update
+          fi
       - name: Import code signing assets
         uses: apple-actions/import-codesign-certs@v2
         with:
@@ -45,6 +86,7 @@ jobs:
           BUNDLE_ID: ${{ secrets.BUNDLE_ID }}
           SCHEME: ${{ secrets.SCHEME }}
           WORKSPACE: ${{ secrets.WORKSPACE }}
+        working-directory: ${{ env.WORKING_DIR }}
         run: fastlane ci
       - name: Upload ipa artifact
         if: always()
