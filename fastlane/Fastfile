@@ -3,6 +3,8 @@ default_platform(:ios)
 platform :ios do
   desc "CI: tests, build, upload to TestFlight"
   lane :ci do
+    require 'json'
+
     api = app_store_connect_api_key(
       key_id: ENV["ASC_KEY_ID"],
       issuer_id: ENV["ASC_ISSUER_ID"],
@@ -10,17 +12,60 @@ platform :ios do
       in_house: false
     )
 
+    # Autodetect workspace or project
+    workspace = ENV["WORKSPACE"]
+    project = nil
+    if workspace.nil? || workspace.strip.empty?
+      workspace = Dir["*.xcworkspace"].first
+    end
+    if workspace.nil?
+      project = Dir["*.xcodeproj"].first
+    end
+
+    UI.user_error!("No Xcode workspace or project found in repository root") if workspace.nil? && project.nil?
+
+    # Autodetect scheme
+    schemes = []
+    begin
+      if workspace
+        out = sh("xcodebuild -list -json -workspace \"#{workspace}\"")
+      else
+        out = sh("xcodebuild -list -json -project \"#{project}\"")
+      end
+      json = JSON.parse(out) rescue {}
+      # Collect schemes from potential keys
+      schemes += (json.dig('workspace', 'schemes') || [])
+      schemes += (json.dig('project', 'schemes') || [])
+      schemes.uniq!
+    rescue => e
+      UI.message("Scheme autodetect failed: #{e}")
+    end
+    scheme = ENV["SCHEME"]
+    scheme = schemes.first if (scheme.nil? || scheme.strip.empty?) && !schemes.empty?
+    UI.user_error!("No scheme found. Please set SCHEME secret or ensure a shared scheme exists") if scheme.nil? || scheme.strip.empty?
+
+    # Tests
     run_tests(
-      scheme: ENV["SCHEME"],
+      scheme: scheme,
       devices: ["iPhone 15"]
     )
 
-    build_app(
-      workspace: ENV["WORKSPACE"],
-      scheme: ENV["SCHEME"],
-      export_method: "app-store"
-    )
+    # Build
+    if workspace
+      build_app(
+        workspace: workspace,
+        scheme: scheme,
+        export_method: "app-store"
+      )
+    else
+      build_app(
+        project: project,
+        scheme: scheme,
+        export_method: "app-store"
+      )
+    end
 
+    # Upload to TestFlight
     pilot(
       api_key: api,
       skip_waiting_for_build_processing: true
