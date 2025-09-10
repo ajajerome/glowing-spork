@@ -1,0 +1,164 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "CI: tests, build, upload to TestFlight"
+  lane :ci do
+    require 'json'
+    api = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_API_KEY_P8"],
+      in_house: false
+    )
+
+    workspace = ENV["WORKSPACE"]
+    project = nil
+    workspace = Dir["*.xcworkspace"].first if workspace.nil? || workspace.strip.empty?
+    project = Dir["*.xcodeproj"].first if workspace.nil?
+    UI.user_error!("No Xcode workspace or project found in repository root") if workspace.nil? && project.nil?
+
+    schemes = []
+    out = workspace ? sh("xcodebuild -list -json -workspace \"#{workspace}\"") : sh("xcodebuild -list -json -project \"#{project}\"")
+    json = JSON.parse(out) rescue {}
+    schemes += (json.dig('workspace', 'schemes') || [])
+    schemes += (json.dig('project', 'schemes') || [])
+    schemes.uniq!
+    scheme = ENV["SCHEME"]
+    scheme = schemes.first if (scheme.nil? || scheme.strip.empty?) && !schemes.empty?
+    UI.user_error!("No scheme found. Please set SCHEME secret or ensure a shared scheme exists") if scheme.nil? || scheme.strip.empty?
+
+    run_tests(scheme: scheme, devices: ["iPhone 15"])
+
+    if workspace
+      build_app(workspace: workspace, scheme: scheme, export_method: "app-store")
+    else
+      build_app(project: project, scheme: scheme, export_method: "app-store")
+    end
+
+    pilot(api_key: api, skip_waiting_for_build_processing: true)
+  end
+
+  desc "SIM: build iOS Simulator .app and zip as artifact"
+  lane :sim do
+    require 'json'
+    workspace = ENV["WORKSPACE"]
+    project = nil
+    workspace = Dir["*.xcworkspace"].first if workspace.nil? || workspace.strip.empty?
+    project = Dir["*.xcodeproj"].first if workspace.nil?
+    UI.user_error!("No Xcode workspace or project found in repository root") if workspace.nil? && project.nil?
+
+    schemes = []
+    out = workspace ? sh("xcodebuild -list -json -workspace \"#{workspace}\"") : sh("xcodebuild -list -json -project \"#{project}\"")
+    json = JSON.parse(out) rescue {}
+    schemes += (json.dig('workspace', 'schemes') || [])
+    schemes += (json.dig('project', 'schemes') || [])
+    schemes.uniq!
+    scheme = ENV["SCHEME"]
+    scheme = schemes.first if (scheme.nil? || scheme.strip.empty?) && !schemes.empty?
+    UI.user_error!("No scheme found. Please set SCHEME secret or ensure a shared scheme exists") if scheme.nil? || scheme.strip.empty?
+
+    sh("rm -rf build")
+    if workspace
+      sh("xcodebuild -workspace \"#{workspace}\" -scheme \"#{scheme}\" -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build clean build | xcpretty")
+    else
+      sh("xcodebuild -project \"#{project}\" -scheme \"#{scheme}\" -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build clean build | xcpretty")
+    end
+
+    app_path = Dir["build/Build/Products/**/Debug-iphonesimulator/*.app"].first
+    UI.user_error!("Simulator .app not found in derived data") if app_path.nil?
+
+    zip_target = File.expand_path("simulator_app.zip")
+    Dir.chdir(File.dirname(app_path)) { sh("zip -r \"#{zip_target}\" \"#{File.basename(app_path)}\"") }
+    UI.success("Simulator artifact: #{zip_target}")
+  end
+end
+
+    Lägg iOS‑grund (Xcodegen läser detta och genererar projekt)
+
+    Name: ios/project.yml
+
+name: Learnfotball
+options:
+  minimumXcodeGenVersion: 2.33.0
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.learnfotball
+    DEVELOPMENT_TEAM: MW98Z2Q68W
+    SWIFT_VERSION: 5.0
+    TARGETED_DEVICE_FAMILY: 1
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 0.1.0
+targets:
+  Learnfotball:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: Resources
+    settings:
+      base:
+        INFOPLIST_FILE: Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    scheme:
+      gatherCoverageData: false
+    info:
+      path: Info.plist
+      properties:
+        CFBundleName: Learnfotball
+        CFBundleDisplayName: Learnfotball
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UILaunchScreen: {}
+
+    Name: ios/Sources/App.swift
+
+import SwiftUI
+
+@main
+struct LearnfotballApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+
+    Name: ios/Sources/ContentView.swift
+
+import SwiftUI
+import SpriteKit
+
+struct PitchScene: SKScene {
+    override func didMove(to view: SKView) {
+        backgroundColor = .green
+        let center = SKShapeNode(circleOfRadius: 40)
+        center.fillColor = .white
+        center.strokeColor = .white
+        center.position = CGPoint(x: size.width/2, y: size.height/2)
+        addChild(center)
+    }
+}
+
+struct ContentView: View {
+    var scene: SKScene {
+        let scene = PitchScene()
+        scene.size = CGSize(width: 390, height: 844)
+        scene.scaleMode = .resizeFill
+        return scene
+    }
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Text("Learnfotball MVP").font(.title2).bold()
+            SpriteView(scene: scene)
+                .ignoresSafeArea()
+        }
+    }
+}
