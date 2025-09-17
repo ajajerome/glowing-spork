@@ -27,6 +27,11 @@ platform :ios do
     scheme = schemes.first if (scheme.nil? || scheme.strip.empty?) && !schemes.empty?
     UI.user_error!("No scheme found. Please set SCHEME secret or ensure a shared scheme exists") if scheme.nil? || scheme.strip.empty?
 
+    increment_build_number(
+      xcodeproj: project,
+      build_number: Time.now.strftime("%y%m%d%H%M")
+    ) if project
+
     run_tests(scheme: scheme, devices: ["iPhone 15"])
 
     if workspace

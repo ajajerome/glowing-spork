@@ -36,8 +36,15 @@ xcodegen generate
 2) Open the generated `.xcodeproj` in Xcode and run on a simulator.
 
 ## CI / Artifacts
-- GitHub Actions workflow `iOS CI (TestFlight)` builds a simulator app and uploads `simulator_app.zip` as an artifact.
-- If TestFlight secrets are configured, the `testflight` job builds and uploads via Fastlane.
+- GitHub Actions workflow (`.github/workflows/ios.yml`) körs på push och dagligen 05:00 UTC.
+- Simulator‑build laddas upp som artifact (`simulator_app.zip`).
+- Med TestFlight‑hemligheter bygger och publicerar `testflight` via Fastlane.
+- Fastlane bump: buildnummer sätts automatiskt utifrån tidsstämpel i `ci`.
+## Publicering – hemligheter (GitHub Actions)
+- `ASC_ISSUER_ID`, `ASC_KEY_ID`, `ASC_API_KEY_P8`
+- `TEAM_ID`, `BUNDLE_ID`
+- `SIGNING_CERT_P12`, `SIGNING_CERT_PASSWORD`, `PROVISIONING_PROFILE`
+
 
 ## Controls
 - Start: begins the 30s drill and launches the ball
