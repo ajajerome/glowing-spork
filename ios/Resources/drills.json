@@ -1,0 +1,35 @@
+{
+  "drills": [
+    {
+      "id": "d-2v1-breadth",
+      "title": "2v1 – Bredd och timing",
+      "description": "Skapa passlinje genom bredd och tajmad pass.",
+      "ageBands": ["9-11", "12-13"],
+      "timeLimitSeconds": 30,
+      "conesCount": 5,
+      "domain": "attack",
+      "skillTags": ["2v1", "bredd", "timing"]
+    },
+    {
+      "id": "d-scanning",
+      "title": "Scanning före mottag",
+      "description": "Träna att titta upp och orientera innan bolltouch.",
+      "ageBands": ["6-8", "9-11"],
+      "timeLimitSeconds": 25,
+      "conesCount": 4,
+      "domain": "attack",
+      "skillTags": ["scanning", "orientering"]
+    },
+    {
+      "id": "d-press-delay",
+      "title": "Press – fördröj och styr",
+      "description": "Första mål: sakta ner och styra spelriktning.",
+      "ageBands": ["12-13", "14-15"],
+      "timeLimitSeconds": 35,
+      "conesCount": 6,
+      "domain": "defence",
+      "skillTags": ["press", "fördröjning", "styrning"]
+    }
+  ]
+}
+

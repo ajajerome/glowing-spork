@@ -24,6 +24,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
     private var timeRemaining: TimeInterval = 30
     private var lastUpdateTime: TimeInterval = 0
     private var score: Int = 0 { didSet { updateScoreLabel() } }
+    private var configuredCones: Int = 5
 
     override func didMove(to view: SKView) {
         backgroundColor = .systemGreen
@@ -37,7 +38,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         setupHUD()
         setupPlayer()
         setupBall()
-        spawnCones(count: 5)
+        spawnCones(count: configuredCones)
         centerCameraIfNeeded()
         resetDrill()
     }
@@ -179,7 +180,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         setupPlayer()
         setupBall()
         removeAllCones()
-        spawnCones(count: 5)
+        spawnCones(count: configuredCones)
         score = 0
         timeRemaining = 30
         lastUpdateTime = 0
@@ -197,6 +198,13 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         if let number = number {
             numberLabel.text = "\(number)"
         }
+    }
+
+    // Apply drill config
+    func applyDrill(_ drill: DrillDefinition) {
+        configuredCones = max(1, drill.conesCount)
+        timeRemaining = TimeInterval(max(10, drill.timeLimitSeconds))
+        resetDrill()
     }
 
     private func addInitialBallImpulse() {

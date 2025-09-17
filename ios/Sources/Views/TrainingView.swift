@@ -26,12 +26,16 @@ struct TrainingView: View, TrainingSceneDelegate {
     @State private var scene = DelegatingTrainingScene()
     @State private var showQuestion = false
     @State private var currentQuestion: QuestionItem? = nil
+    @State private var selectedDrill: DrillDefinition? = nil
+    @State private var showSelector = false
 
     var body: some View {
         VStack(spacing: 12) {
             header
 
             HStack(spacing: 12) {
+                Button("Välj övning") { showSelector = true }
+                    .buttonStyle(.bordered)
                 Button("Start") { scene.startDrill() }
                     .buttonStyle(.borderedProminent)
                 Button("Reset") { scene.resetDrill() }
@@ -54,6 +58,13 @@ struct TrainingView: View, TrainingSceneDelegate {
                 QuestionView(question: q) { _ in
                     showQuestion = false
                 }
+            }
+        }
+        .sheet(isPresented: $showSelector) {
+            DrillSelectorView { drill in
+                selectedDrill = drill
+                scene.applyDrill(drill)
+                showSelector = false
             }
         }
     }
