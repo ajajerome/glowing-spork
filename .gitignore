@@ -1,0 +1,25 @@
+# Xcode
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+build/
+
+# Swift Package Manager
+.build/
+/.swiftpm/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+simulator_app.zip
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+.cursor/
+
