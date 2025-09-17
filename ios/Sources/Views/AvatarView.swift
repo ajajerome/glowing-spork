@@ -5,6 +5,7 @@ struct AvatarView: View {
 
     @State private var name: String = ""
     @State private var ageBand: AgeBand = .nineToEleven
+    @State private var birthDate: Date = Calendar.current.date(byAdding: .year, value: -10, to: Date()) ?? Date()
     @State private var favoritePosition: FavoritePosition = .midfielder
     @State private var jerseyColor: Color = Color(red: 0.12, green: 0.47, blue: 0.90)
     @State private var skinTone: Color = Color(red: 0.94, green: 0.80, blue: 0.63)
@@ -25,11 +26,16 @@ struct AvatarView: View {
 
                 Group {
                     Text("Åldersgrupp").font(.headline)
+                    DatePicker("Födelsedatum", selection: $birthDate, displayedComponents: .date)
                     Picker("Åldersgrupp", selection: $ageBand) {
                         ForEach(AgeBand.allCases) { band in
                             Text(band.rawValue).tag(band)
                         }
                     }.pickerStyle(.segmented)
+                    .onChange(of: birthDate) { _, newVal in
+                        let years = Calendar.current.dateComponents([.year], from: newVal, to: Date()).year ?? 0
+                        ageBand = AgeBand.from(ageYears: years)
+                    }
                 }
 
                 Group {
@@ -94,6 +100,7 @@ struct AvatarView: View {
     private func hydrate() {
         guard let a = store.avatar else { return }
         name = a.name
+        birthDate = a.birthDate ?? birthDate
         ageBand = a.ageBand
         favoritePosition = a.favoritePosition
         jerseyColor = Color(hex: a.jerseyColorHex) ?? jerseyColor
@@ -104,6 +111,7 @@ struct AvatarView: View {
     private func save() {
         let avatar = Avatar(
             name: name.isEmpty ? "Spelare" : name,
+            birthDate: birthDate,
             ageBand: ageBand,
             favoritePosition: favoritePosition,
             jerseyColorHex: jerseyColor.toHexRGB() ?? "#1F77D4",

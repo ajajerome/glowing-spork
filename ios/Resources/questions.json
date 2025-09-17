@@ -1,0 +1,38 @@
+{
+  "questions": [
+    {
+      "id": "q-6-8-scan-1",
+      "ageBand": "6-8",
+      "domain": "attack",
+      "skillTags": ["scanning", "pass"],
+      "stem": "Vad ska du göra innan du tar emot bollen?",
+      "choices": ["Titta ner på fötterna", "Titta upp och scanna runt", "Stå still"],
+      "correctIndex": 1,
+      "rationale": "Scanning före mottag är grund för beslut.",
+      "difficulty": 1
+    },
+    {
+      "id": "q-9-11-2v1-1",
+      "ageBand": "9-11",
+      "domain": "attack",
+      "skillTags": ["2v1", "bredd"],
+      "stem": "I 2v1, vad skapar bäst chans att slå försvararen?",
+      "choices": ["Driva rakt mot försvararen", "Bredda och passa i rätt tempo", "Stanna upp"],
+      "correctIndex": 1,
+      "rationale": "Bredd + timing öppnar passningslinje.",
+      "difficulty": 2
+    },
+    {
+      "id": "q-12-13-press-1",
+      "ageBand": "12-13",
+      "domain": "defence",
+      "skillTags": ["press", "cover"],
+      "stem": "Vad är första målet vid press?",
+      "choices": ["Vinna boll direkt", "Sakta ner och styra spel", "Backa"],
+      "correctIndex": 1,
+      "rationale": "Fördröjning och styrning är första steg.",
+      "difficulty": 2
+    }
+  ]
+}
+
