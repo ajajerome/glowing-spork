@@ -25,6 +25,8 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
     private var lastUpdateTime: TimeInterval = 0
     private var score: Int = 0 { didSet { updateScoreLabel() } }
     private var configuredCones: Int = 5
+    private var telemetry = DrillSessionTelemetry()
+    private var currentDrillId: String? = nil
 
     override func didMove(to view: SKView) {
         backgroundColor = .systemGreen
@@ -171,6 +173,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         guard !isRunning else { return }
         isRunning = true
         timeRemaining = max(1, timeRemaining)
+        telemetry.startAt = Date()
         addInitialBallImpulse()
     }
 
@@ -188,6 +191,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         ballNode.physicsBody?.velocity = .zero
         ballNode.position = CGPoint(x: frame.midX, y: frame.midY)
         updateTimerLabel()
+        telemetry = DrillSessionTelemetry(drillId: currentDrillId, ageBand: nil)
     }
 
     // Apply avatar styling
@@ -204,6 +208,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
     func applyDrill(_ drill: DrillDefinition) {
         configuredCones = max(1, drill.conesCount)
         timeRemaining = TimeInterval(max(10, drill.timeLimitSeconds))
+        currentDrillId = drill.id
         resetDrill()
     }
 
@@ -229,6 +234,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         let clampedX = max(frame.minX + 20, min(p.x, frame.maxX - 20))
         let clampedY = max(frame.minY + 60, min(p.y, frame.maxY - 20))
         playerNode.position = CGPoint(x: clampedX, y: clampedY)
+        telemetry.touchesMovedCount += 1
     }
 
     // MARK: - Game loop
@@ -242,6 +248,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
             timeRemaining = 0
             isRunning = false
             ballNode.physicsBody?.velocity = .zero
+            telemetry.endAt = Date()
         }
         updateTimerLabel()
     }
@@ -253,11 +260,22 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
             if let cone = (contact.bodyA.node?.name == "cone" ? contact.bodyA.node : (contact.bodyB.node?.name == "cone" ? contact.bodyB.node : nil)) {
                 cone.removeFromParent()
                 score += 1
+                telemetry.conesCollected += 1
                 run(SKAction.wait(forDuration: 0.4)) { [weak self] in
                     self?.spawnCones(count: 1)
                 }
             }
         }
+    }
+
+    // Register a scanning action from UI
+    func registerScan() {
+        telemetry.scansCount += 1
+    }
+
+    // Snapshot of current telemetry
+    func telemetrySnapshot() -> DrillSessionTelemetry {
+        telemetry.finalized()
     }
 }
 

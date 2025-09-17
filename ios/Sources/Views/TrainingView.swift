@@ -28,6 +28,8 @@ struct TrainingView: View, TrainingSceneDelegate {
     @State private var currentQuestion: QuestionItem? = nil
     @State private var selectedDrill: DrillDefinition? = nil
     @State private var showSelector = false
+    @State private var showSummary = false
+    @State private var lastSession: DrillSessionTelemetry? = nil
 
     var body: some View {
         VStack(spacing: 12) {
@@ -41,6 +43,8 @@ struct TrainingView: View, TrainingSceneDelegate {
                 Button("Reset") { scene.resetDrill() }
                     .buttonStyle(.bordered)
                 Button("Demo") { runDemo() }
+                    .buttonStyle(.bordered)
+                Button("Scan") { scene.registerScan() }
                     .buttonStyle(.bordered)
             }
 
@@ -65,6 +69,13 @@ struct TrainingView: View, TrainingSceneDelegate {
                 selectedDrill = drill
                 scene.applyDrill(drill)
                 showSelector = false
+            }
+        }
+        .sheet(isPresented: $showSummary) {
+            if let s = lastSession {
+                SummaryView(session: s) {
+                    showSummary = false
+                }
             }
         }
     }
@@ -102,12 +113,17 @@ struct TrainingView: View, TrainingSceneDelegate {
 
     // MARK: - TrainingSceneDelegate
     func trainingDidEnd(score: Int) {
-        guard let ageBand = avatarStore.avatar?.derivedAgeBand() ?? avatarStore.avatar?.ageBand else {
-            currentQuestion = QuestionService.shared.oneRandom(for: .nineToEleven)
-            showQuestion = currentQuestion != nil
-            return
-        }
-        currentQuestion = QuestionService.shared.oneRandom(for: ageBand)
+        // Save telemetry
+        var session = scene.telemetrySnapshot()
+        session.score = score
+        session.ageBand = avatarStore.avatar?.derivedAgeBand() ?? avatarStore.avatar?.ageBand
+        ProgressStore.shared.add(session)
+        lastSession = session
+        showSummary = true
+
+        // Then show question
+        let band = session.ageBand ?? .nineToEleven
+        currentQuestion = QuestionService.shared.oneRandom(for: band)
         showQuestion = currentQuestion != nil
     }
 }
