@@ -1,0 +1,9 @@
+{
+  "sources": [
+    { "id": "uefa-c-license", "title": "UEFA C License Coaching Manual", "org": "UEFA", "year": 2023 },
+    { "id": "uefa-b-license", "title": "UEFA B License Coaching Manual", "org": "UEFA", "year": 2023 },
+    { "id": "svff-player-development", "title": "Spelarutbildningsplan", "org": "SvFF", "year": 2022 },
+    { "id": "fifa-coaching-manual", "title": "FIFA Coaching Manual", "org": "FIFA", "year": 2020 }
+  ]
+}
+

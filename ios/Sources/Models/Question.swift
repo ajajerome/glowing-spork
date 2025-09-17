@@ -10,6 +10,9 @@ struct QuestionItem: Codable, Identifiable, Equatable {
     let correctIndex: Int?
     let rationale: String?
     let difficulty: Int
+    let objectives: [String]?
+    let methodology: String?
+    let sources: [String]?
 }
 
 struct QuestionBank: Codable {

@@ -9,7 +9,10 @@
       "choices": ["Titta ner på fötterna", "Titta upp och scanna runt", "Stå still"],
       "correctIndex": 1,
       "rationale": "Scanning före mottag är grund för beslut.",
-      "difficulty": 1
+      "difficulty": 1,
+      "objectives": ["Öka scanning före första touch"],
+      "methodology": "TGfU; perception–action coupling; constraints-led.",
+      "sources": ["uefa-c-license", "svff-player-development"]
     },
     {
       "id": "q-9-11-2v1-1",
@@ -20,7 +23,10 @@
       "choices": ["Driva rakt mot försvararen", "Bredda och passa i rätt tempo", "Stanna upp"],
       "correctIndex": 1,
       "rationale": "Bredd + timing öppnar passningslinje.",
-      "difficulty": 2
+      "difficulty": 2,
+      "objectives": ["Känna igen 2v1 möjlighet", "Välja bredd"],
+      "methodology": "Small-sided games, constraints-led.",
+      "sources": ["uefa-b-license"]
     },
     {
       "id": "q-12-13-press-1",
@@ -31,7 +37,10 @@
       "choices": ["Vinna boll direkt", "Sakta ner och styra spel", "Backa"],
       "correctIndex": 1,
       "rationale": "Fördröjning och styrning är första steg.",
-      "difficulty": 2
+      "difficulty": 2,
+      "objectives": ["Fördröja, styra bort från centrum"],
+      "methodology": "Defending principles; TGfU.",
+      "sources": ["fifa-coaching-manual"]
     }
   ]
 }

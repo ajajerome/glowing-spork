@@ -32,6 +32,13 @@ struct QuestionView: View {
                 Button("Fortsätt") { onAnswer(selectedIndex) }
                     .buttonStyle(.borderedProminent)
             }
+            if let sources = ResearchService.shared.resolve(ids: question.sources) as [ResearchSource]? , !sources.isEmpty {
+                Divider()
+                Text("Källa:").font(.caption).foregroundColor(.secondary)
+                ForEach(sources) { s in
+                    Text("• \(s.org): \(s.title) (\(s.year))").font(.caption2).foregroundColor(.secondary)
+                }
+            }
         }
         .padding()
     }

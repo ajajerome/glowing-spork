@@ -9,6 +9,9 @@ struct DrillDefinition: Codable, Identifiable, Equatable {
     let conesCount: Int
     let domain: String
     let skillTags: [String]
+    let objectives: [String]?
+    let methodology: String?
+    let sources: [String]?
 }
 
 struct DrillCatalog: Codable {

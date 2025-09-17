@@ -26,6 +26,9 @@ struct DrillSelectorView: View {
                                     }
                                     .font(.caption)
                                     .foregroundColor(.secondary)
+                                    if let sources = ResearchService.shared.resolve(ids: drill.sources), !sources.isEmpty {
+                                        Text("Källa: \(sources.first!.org)").font(.caption2).foregroundColor(.secondary)
+                                    }
                                 }
                                 Spacer()
                             }
