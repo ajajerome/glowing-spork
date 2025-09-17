@@ -44,21 +44,40 @@ struct Avatar: Codable, Equatable, Identifiable {
     let id: UUID
     var name: String
     var birthDate: Date?
+    var jerseyNumber: Int
     var ageBand: AgeBand
     var favoritePosition: FavoritePosition
     var jerseyColorHex: String
     var skinToneHex: String
     var hairStyle: HairStyle
 
-    init(id: UUID = UUID(), name: String, birthDate: Date? = nil, ageBand: AgeBand, favoritePosition: FavoritePosition, jerseyColorHex: String, skinToneHex: String, hairStyle: HairStyle) {
+    init(id: UUID = UUID(), name: String, birthDate: Date? = nil, jerseyNumber: Int = 10, ageBand: AgeBand, favoritePosition: FavoritePosition, jerseyColorHex: String, skinToneHex: String, hairStyle: HairStyle) {
         self.id = id
         self.name = name
         self.birthDate = birthDate
+        self.jerseyNumber = max(1, min(99, jerseyNumber))
         self.ageBand = ageBand
         self.favoritePosition = favoritePosition
         self.jerseyColorHex = jerseyColorHex
         self.skinToneHex = skinToneHex
         self.hairStyle = hairStyle
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, birthDate, jerseyNumber, ageBand, favoritePosition, jerseyColorHex, skinToneHex, hairStyle
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        birthDate = try container.decodeIfPresent(Date.self, forKey: .birthDate)
+        jerseyNumber = try container.decodeIfPresent(Int.self, forKey: .jerseyNumber) ?? 10
+        ageBand = try container.decode(AgeBand.self, forKey: .ageBand)
+        favoritePosition = try container.decode(FavoritePosition.self, forKey: .favoritePosition)
+        jerseyColorHex = try container.decode(String.self, forKey: .jerseyColorHex)
+        skinToneHex = try container.decode(String.self, forKey: .skinToneHex)
+        hairStyle = try container.decode(HairStyle.self, forKey: .hairStyle)
     }
 
     var computedAgeYears: Int? {

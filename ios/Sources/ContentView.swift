@@ -11,6 +11,7 @@ struct ContentView: View {
             TrainerEditorView()
                 .tabItem { Label("Tränare", systemImage: "pencil") }
         }
+        .tint(Color.accentColor)
     }
 }
 

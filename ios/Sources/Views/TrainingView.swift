@@ -29,21 +29,14 @@ struct TrainingView: View, TrainingSceneDelegate {
 
     var body: some View {
         VStack(spacing: 12) {
-            HStack {
-                Text("Träning").font(.title2).bold()
-                Spacer()
-                if let a = avatarStore.avatar {
-                    Text(a.name).font(.subheadline)
-                        .padding(.horizontal, 8).padding(.vertical, 4)
-                        .background(Color(.secondarySystemBackground))
-                        .cornerRadius(8)
-                }
-            }
+            header
 
             HStack(spacing: 12) {
                 Button("Start") { scene.startDrill() }
                     .buttonStyle(.borderedProminent)
                 Button("Reset") { scene.resetDrill() }
+                    .buttonStyle(.bordered)
+                Button("Demo") { runDemo() }
                     .buttonStyle(.bordered)
             }
 
@@ -54,6 +47,7 @@ struct TrainingView: View, TrainingSceneDelegate {
             scene.size = CGSize(width: 390, height: 844)
             scene.scaleMode = .resizeFill
             scene.trainingDelegate = self
+            applyAvatar()
         }
         .sheet(isPresented: $showQuestion) {
             if let q = currentQuestion {
@@ -61,6 +55,37 @@ struct TrainingView: View, TrainingSceneDelegate {
                     showQuestion = false
                 }
             }
+        }
+    }
+
+    private var header: some View {
+        HStack {
+            if let a = avatarStore.avatar {
+                Circle().fill(Color(hex: a.jerseyColorHex) ?? .blue)
+                    .frame(width: 36, height: 36)
+                    .overlay(Text("\(a.jerseyNumber)").font(.footnote).bold().foregroundColor(.white))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(a.name).font(.headline)
+                    Text("\(a.ageBand.rawValue)").font(.caption).foregroundColor(.secondary)
+                }
+            } else {
+                Text("Träning").font(.title2).bold()
+            }
+            Spacer()
+        }
+        .padding(.horizontal)
+    }
+
+    private func applyAvatar() {
+        if let a = avatarStore.avatar {
+            scene.applyAvatarStyling(name: a.name, number: a.jerseyNumber, jerseyHex: a.jerseyColorHex)
+        }
+    }
+
+    private func runDemo() {
+        scene.resetDrill()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            scene.startDrill()
         }
     }
 

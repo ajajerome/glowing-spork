@@ -17,6 +17,7 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
 
     // Game nodes
     private let playerNode = SKShapeNode(circleOfRadius: 18)
+    private let numberLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
     private let ballNode = SKShapeNode(circleOfRadius: 12)
 
     private var isRunning = false
@@ -94,6 +95,14 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         playerNode.physicsBody?.categoryBitMask = Category.player
         playerNode.physicsBody?.contactTestBitMask = Category.ball
         addChild(playerNode)
+
+        numberLabel.fontSize = 16
+        numberLabel.fontColor = .white
+        numberLabel.verticalAlignmentMode = .center
+        numberLabel.horizontalAlignmentMode = .center
+        numberLabel.zPosition = 20
+        numberLabel.text = "10"
+        playerNode.addChild(numberLabel)
     }
 
     private func setupBall() {
@@ -178,6 +187,16 @@ final class TrainingScene: SKScene, SKPhysicsContactDelegate {
         ballNode.physicsBody?.velocity = .zero
         ballNode.position = CGPoint(x: frame.midX, y: frame.midY)
         updateTimerLabel()
+    }
+
+    // Apply avatar styling
+    func applyAvatarStyling(name: String?, number: Int?, jerseyHex: String?) {
+        if let hex = jerseyHex, let color = UIColor(hex: hex) {
+            playerNode.fillColor = SKColor(color)
+        }
+        if let number = number {
+            numberLabel.text = "\(number)"
+        }
     }
 
     private func addInitialBallImpulse() {

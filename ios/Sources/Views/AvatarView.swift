@@ -6,6 +6,7 @@ struct AvatarView: View {
     @State private var name: String = ""
     @State private var ageBand: AgeBand = .nineToEleven
     @State private var birthDate: Date = Calendar.current.date(byAdding: .year, value: -10, to: Date()) ?? Date()
+    @State private var jerseyNumber: Int = 10
     @State private var favoritePosition: FavoritePosition = .midfielder
     @State private var jerseyColor: Color = Color(red: 0.12, green: 0.47, blue: 0.90)
     @State private var skinTone: Color = Color(red: 0.94, green: 0.80, blue: 0.63)
@@ -50,6 +51,9 @@ struct AvatarView: View {
                 Group {
                     Text("Tröjfärg").font(.headline)
                     ColorPicker("Tröjfärg", selection: $jerseyColor)
+                    Stepper(value: $jerseyNumber, in: 1...99) {
+                        Text("Tröjnummer: \(jerseyNumber)")
+                    }
                 }
 
                 Group {
@@ -101,6 +105,7 @@ struct AvatarView: View {
         guard let a = store.avatar else { return }
         name = a.name
         birthDate = a.birthDate ?? birthDate
+        jerseyNumber = a.jerseyNumber
         ageBand = a.ageBand
         favoritePosition = a.favoritePosition
         jerseyColor = Color(hex: a.jerseyColorHex) ?? jerseyColor
@@ -112,6 +117,7 @@ struct AvatarView: View {
         let avatar = Avatar(
             name: name.isEmpty ? "Spelare" : name,
             birthDate: birthDate,
+            jerseyNumber: jerseyNumber,
             ageBand: ageBand,
             favoritePosition: favoritePosition,
             jerseyColorHex: jerseyColor.toHexRGB() ?? "#1F77D4",
