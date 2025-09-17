@@ -11,6 +11,8 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Correlation ID
+        run: echo "CorrelationID: bc-0d2bc968-bfd5-4cb6-b041-d5b75bcca08d"
 
       - name: Install tools
         run: |
@@ -40,6 +42,8 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Correlation ID
+        run: echo "CorrelationID: bc-0d2bc968-bfd5-4cb6-b041-d5b75bcca08d"
 
       - name: Install tools
         run: |

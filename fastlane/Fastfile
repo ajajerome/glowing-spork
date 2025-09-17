@@ -32,6 +32,7 @@ platform :ios do
       build_number: Time.now.strftime("%y%m%d%H%M")
     ) if project
 
+    UI.message("CorrelationID: bc-0d2bc968-bfd5-4cb6-b041-d5b75bcca08d")
     run_tests(scheme: scheme, devices: ["iPhone 15"])
 
     if workspace
@@ -62,6 +63,7 @@ platform :ios do
     scheme = schemes.first if (scheme.nil? || scheme.strip.empty?) && !schemes.empty?
     UI.user_error!("No scheme found. Please set SCHEME secret or ensure a shared scheme exists") if scheme.nil? || scheme.strip.empty?
 
+    UI.message("CorrelationID: bc-0d2bc968-bfd5-4cb6-b041-d5b75bcca08d")
     sh("rm -rf build")
     if workspace
       sh("xcodebuild -workspace \"#{workspace}\" -scheme \"#{scheme}\" -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build clean build | xcpretty")
