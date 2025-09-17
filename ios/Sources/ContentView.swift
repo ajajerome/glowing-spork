@@ -1,30 +1,24 @@
 import SwiftUI
 import SpriteKit
 
-struct PitchScene: SKScene {
-    override func didMove(to view: SKView) {
-        backgroundColor = .green
-        let center = SKShapeNode(circleOfRadius: 40)
-        center.fillColor = .white
-        center.strokeColor = .white
-        center.position = CGPoint(x: size.width/2, y: size.height/2)
-        addChild(center)
-    }
-}
-
 struct ContentView: View {
-    var scene: SKScene {
-        let scene = PitchScene()
-        scene.size = CGSize(width: 390, height: 844)
-        scene.scaleMode = .resizeFill
-        return scene
-    }
+    @State private var trainingScene = TrainingScene()
 
     var body: some View {
         VStack(spacing: 12) {
             Text("Learnfotball MVP").font(.title2).bold()
-            SpriteView(scene: scene)
+            HStack(spacing: 12) {
+                Button("Start") { trainingScene.startDrill() }
+                    .buttonStyle(.borderedProminent)
+                Button("Reset") { trainingScene.resetDrill() }
+                    .buttonStyle(.bordered)
+            }
+            SpriteView(scene: trainingScene)
                 .ignoresSafeArea()
+        }
+        .onAppear {
+            trainingScene.size = CGSize(width: 390, height: 844)
+            trainingScene.scaleMode = .resizeFill
         }
     }
 }
