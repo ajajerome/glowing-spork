@@ -6,12 +6,14 @@ struct ContentView: View {
         TabView {
             ScenarioGameView()
                 .tabItem { Label("SpelSmart", systemImage: "brain.head.profile") }
+            DailyChallengeView()
+                .tabItem { Label("Utmaningar", systemImage: "flame.fill") }
+            ProfileView()
+                .tabItem { Label("Profil", systemImage: "person.crop.square") }
             TrainingView()
                 .tabItem { Label("Träna", systemImage: "sportscourt") }
             AvatarView()
                 .tabItem { Label("Avatar", systemImage: "person.crop.circle") }
-            TrainerEditorView()
-                .tabItem { Label("Tränare", systemImage: "pencil") }
         }
         .tint(Color(red: 0.66, green: 0.88, blue: 0.39)) // SpelSmart lime green
     }

@@ -3,6 +3,7 @@ import SpriteKit
 
 struct ScenarioGameView: View, TacticalPitchDelegate {
     @ObservedObject private var avatarStore = AvatarStore.shared
+    @ObservedObject private var progressStore = GameProgressStore.shared
     @State private var currentScenario: GameScenario?
     @State private var scene = TacticalPitchScene()
     @State private var showingScenarioSelector = false
@@ -11,6 +12,7 @@ struct ScenarioGameView: View, TacticalPitchDelegate {
     @State private var skillsImproved: [TacticalSkill] = []
     @State private var showingResults = false
     @State private var scenarios: [GameScenario] = []
+    @State private var recentXPEvents: [XPEvent] = []
     
     var body: some View {
         ZStack {
@@ -87,6 +89,10 @@ struct ScenarioGameView: View, TacticalPitchDelegate {
             if let avatar = avatarStore.avatar {
                 HStack(spacing: 12) {
                     VStack(alignment: .trailing, spacing: 2) {
+                        Text("Nv. \(progressStore.progress.level)")
+                            .font(.caption)
+                            .bold()
+                            .foregroundColor(.white)
                         Text("XP: +\(xpEarned)")
                             .font(.caption)
                             .foregroundColor(.white)
@@ -172,6 +178,13 @@ struct ScenarioGameView: View, TacticalPitchDelegate {
         // Process decision
         let xpGained = Int(Double(decision.xpReward) * decision.outcome.success.xpMultiplier)
         xpEarned += xpGained
+        
+        // Add XP to global progress with skills
+        progressStore.addXP(xpGained, for: decision.skillsUsed)
+        
+        // Create XP event for animation
+        let xpEvent = XPEvent(amount: xpGained, reason: decision.description, skills: decision.skillsUsed)
+        recentXPEvents.append(xpEvent)
         
         // Update score based on outcome
         switch decision.outcome.success {
