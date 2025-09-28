@@ -1,5 +1,94 @@
-# glowing-spork
-AI driven fotball trainer
+# ⚽ SpelSmart - AI-driven Fotbollsträning
+
+**SpelSmart** är en innovativ iOS-app som utvecklar barns spelförståelse genom interaktiva fotbollsscenarier och AI-driven gamification.
+
+## 🎯 Huvudfunktioner
+
+### 🧠 **Interaktiva Scenarier**
+- Realistiska matchsituationer på intelligent fotbollsplan
+- Taktiska beslutspunkter med omedelbar feedback
+- Anfall, försvar, omställningar och uppspelssituationer
+
+### 🎮 **Gamification System**
+- XP-system med exponentiell progression
+- Player Ranks från "Nybörjare" till "Legend"
+- Badge-system med 7 kategorier och 5 seltenhetsnivåer
+- Skill Radar för 8 taktiska färdigheter
+
+### 🔥 **Dagliga Utmaningar**
+- Specialiserade scenarier med bonus XP
+- Streak-system för konsekvent träning
+- Unika belöningar och exklusiva badges
+
+### 🤖 **AI-driven Analys**
+- Kontextmedveten feedback på beslut
+- Personliga träningsrekommendationer
+- Adaptiv svårighetsgrad baserat på prestationer
+- Detaljerade matchrapporter
+
+## 🎨 Design
+
+- **Färgpalett:** Limegrön (#A8E063) och Djupblå (#1E3C72)
+- **Typografi:** Baloo 2 (rubriker), Inter (brödtext)
+- **Layout:** Kortbaserad, swipevänlig design
+- **Animationer:** Mikroanimationer för engagement
+
+## 🏗️ Teknisk Stack
+
+- **Plattform:** iOS 16.0+
+- **Framework:** SwiftUI + SpriteKit
+- **Språk:** Swift 5.0
+- **AI/ML:** Lokal intelligens för rekommendationer
+- **Data:** JSON-baserat innehållssystem
+
+## 📱 Installation & Testning
+
+Se [TESTING_GUIDE.md](TESTING_GUIDE.md) för detaljerad guide om hur du testar appen på din iPhone.
+
+### Snabbstart:
+```bash
+git clone https://github.com/ajajerome/glowing-spork.git
+cd glowing-spork/ios
+xcodegen generate
+open Learnfotball.xcodeproj
+```
+
+## 🎮 Användning
+
+1. **Skapa Avatar:** Personalisera din spelare
+2. **Spela Scenarier:** Fatta taktiska beslut i realistiska situationer  
+3. **Samla XP & Badges:** Utveckla dina färdigheter
+4. **Dagliga Utmaningar:** Håll din streak vid liv
+5. **Följ Progression:** Se din utveckling i skill radar
+
+## 📊 Målgrupp
+
+- **Primär:** Barn 8-14 år som spelar fotboll
+- **Sekundär:** Tränare och föräldrar som vill stödja utveckling
+- **Fokus:** Spelförståelse och taktiskt tänkande
+
+## 🛣️ Roadmap
+
+- [x] Interaktiva scenarier med beslutspunkter
+- [x] Komplett gamification-system
+- [x] AI-driven feedback och rekommendationer
+- [x] Dagliga utmaningar
+- [ ] Coach-läge för tränare/föräldrar
+- [ ] Multiplayer-scenarier
+- [ ] AR-funktioner för verklig träning
+- [ ] Säsongssystem med ranking
+
+## 🤝 Bidrag
+
+Projektet är under aktiv utveckling. Feedback och förslag är välkomna!
+
+## 📄 Licens
+
+Detta projekt utvecklas för utbildningssyfte med fokus på barns fotbollsutveckling.
+
+---
+
+**Utvecklat med ❤️ för nästa generation fotbollsspelare**
 
 ## Overview
 Learnfotball is a minimal iOS MVP using SwiftUI + SpriteKit. It renders a simple training drill where you drag a player to control interactions with a moving ball and collect cones. The HUD shows score and a countdown timer.
