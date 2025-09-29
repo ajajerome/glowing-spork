@@ -1,0 +1,20 @@
+SpelSmart revolutionerar fotbollsträning genom AI-driven spelförståelse. Istället för att fokusera på teknisk färdighet, utvecklar appen barns taktiska tänkande genom interaktiva matchscenarier.
+
+🧠 HUVUDFUNKTIONER
+• Interaktiva fotbollsscenarier med realistiska beslutspunkter
+• AI-analys som ger personlig feedback på taktiska val
+• Gamification med XP-system, nivåer och badges
+• Dagliga utmaningar som håller motivationen uppe
+• Skill radar som visar utveckling inom 8 taktiska områden
+
+🎯 MÅLGRUPP
+Perfekt för barn 8-14 år som spelar fotboll och vill förbättra sitt spelförståelse. Även bra för föräldrar och tränare som vill stödja barnens utveckling.
+
+🎮 PEDAGOGISKT FOKUS
+Baserat på modern fotbollspedagogik med fokus på:
+- Spelöverskåd och scanning
+- Positionering och rumsuppfattning
+- Beslutsfattande under press
+- Kommunikation och lagarbete
+
+Utvecklad i samarbete med licentierade fotbollstränare och utbildningsexperter.
