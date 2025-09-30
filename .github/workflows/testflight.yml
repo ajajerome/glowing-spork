@@ -1,0 +1,65 @@
+name: 🚀 Deploy to TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+        - beta
+        - release
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+        
+    - name: 📦 Install dependencies
+      run: |
+        brew install xcodegen fastlane
+        
+    - name: 🏗️ Generate Xcode project
+      run: |
+        cd ios
+        xcodegen generate
+        
+    - name: 🔑 Setup App Store Connect API
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+      run: |
+        echo "API keys configured"
+        
+    - name: 🚀 Deploy to TestFlight
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+      run: |
+        cd ios
+        if [ "${{ github.event.inputs.version_type }}" = "release" ]; then
+          fastlane ios release
+        else
+          fastlane ios beta
+        fi
+        
+    - name: 📊 Upload build artifacts
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: build-logs
+        path: |
+          ios/fastlane/report.xml
+          ios/build/logs/
