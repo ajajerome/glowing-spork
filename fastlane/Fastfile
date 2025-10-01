@@ -4,7 +4,7 @@ platform :ios do
   desc "CI: tests, build, upload to TestFlight"
   lane :ci do
     # Setup for Fotbollsresan project
-    ENV["WORKSPACE"] = "Fotbollsresan.xcworkspace"
+    ENV["WORKSPACE"] = "ios/Fotbollsresan.xcworkspace"
     ENV["SCHEME"] = "Fotbollsresan"
     require 'json'
     api = app_store_connect_api_key(
@@ -54,10 +54,11 @@ platform :ios do
   desc "BETA: Build and upload to TestFlight for internal testing"
   lane :beta do
     # Increment build number
-    increment_build_number(xcodeproj: "Fotbollsresan.xcodeproj")
+    increment_build_number(xcodeproj: "ios/Fotbollsresan.xcodeproj")
     
     # Build and upload
     build_app(
+      project: "ios/Fotbollsresan.xcodeproj",
       scheme: "Fotbollsresan",
       export_method: "app-store"
     )
@@ -74,10 +75,11 @@ platform :ios do
   desc "RELEASE: Build and prepare for App Store release"
   lane :release do
     # Increment version number
-    increment_version_number(xcodeproj: "Fotbollsresan.xcodeproj")
+    increment_version_number(xcodeproj: "ios/Fotbollsresan.xcodeproj")
     
     # Build for release
     build_app(
+      project: "ios/Fotbollsresan.xcodeproj",
       scheme: "Fotbollsresan", 
       export_method: "app-store"
     )
