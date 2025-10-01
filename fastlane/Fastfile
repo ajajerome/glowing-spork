@@ -3,8 +3,17 @@ default_platform(:ios)
 platform :ios do
   desc "BETA: Build and upload to TestFlight for internal testing"
   lane :beta do
-    # Ensure we're using the right Xcode
-    sh("sudo xcode-select -s /Applications/Xcode.app") rescue nil
+    # Ensure we're using the right Xcode (try different paths)
+    begin
+      sh("sudo xcode-select -s /Applications/Xcode.app")
+    rescue
+      begin
+        sh("sudo xcode-select -s /Applications/Xcode_15.app")
+      rescue
+        # Use whatever Xcode is available
+        sh("xcode-select -p")
+      end
+    end
     
     # Setup API
     api = app_store_connect_api_key(
