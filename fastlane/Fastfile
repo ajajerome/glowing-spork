@@ -56,9 +56,16 @@ platform :ios do
     # Increment build number
     increment_build_number(xcodeproj: "ios/Fotbollsresan.xcodeproj")
     
+    # Enable automatic code signing
+    update_code_signing_settings(
+      use_automatic_signing: true,
+      path: "ios/Fotbollsresan.xcodeproj",
+      team_id: "MW98Z2Q68W"
+    )
+    
     # Build and upload
     build_app(
-      project: "ios/Fotbollsresan.xcodeproj",
+      workspace: "ios/Fotbollsresan.xcworkspace",
       scheme: "Fotbollsresan",
       export_method: "app-store"
     )
@@ -79,7 +86,7 @@ platform :ios do
     
     # Build for release
     build_app(
-      project: "ios/Fotbollsresan.xcodeproj",
+      workspace: "ios/Fotbollsresan.xcworkspace",
       scheme: "Fotbollsresan", 
       export_method: "app-store"
     )

@@ -33,6 +33,7 @@ jobs:
       run: |
         cd ios
         xcodegen generate
+        ls -la  # Debug: List generated files
         
     - name: 🔑 Setup App Store Connect API
       env:
