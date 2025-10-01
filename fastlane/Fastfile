@@ -28,24 +28,33 @@ platform :ios do
       profile_name: ""
     )
     
-    # Build with more explicit settings
-    gym(
-      project: project_path,
-      scheme: scheme_name,
-      export_method: "app-store",
-      configuration: "Release",
-      xcargs: "-allowProvisioningUpdates -allowProvisioningDeviceRegistration",
-      export_options: {
-        method: "app-store",
-        uploadBitcode: false,
-        uploadSymbols: true,
-        compileBitcode: false
-      }
-    )
+    # Create export options plist first
+    export_plist = {
+      "method" => "app-store",
+      "uploadBitcode" => false,
+      "uploadSymbols" => true,
+      "compileBitcode" => false,
+      "teamID" => "MW98Z2Q68W"
+    }
+    File.write("./export_options.plist", export_plist.to_plist)
+    
+    # Create build directory
+    sh("mkdir -p build")
+    
+    # Build with direct xcodebuild for better error visibility
+    sh("xcodebuild -project '#{project_path}' -scheme '#{scheme_name}' -configuration Release -archivePath './build/Fotbollsresan.xcarchive' -allowProvisioningUpdates -allowProvisioningDeviceRegistration archive")
+    
+    # Export archive
+    sh("xcodebuild -exportArchive -archivePath './build/Fotbollsresan.xcarchive' -exportPath './build' -exportOptionsPlist './export_options.plist' -allowProvisioningUpdates")
+    
+    # Find the generated IPA file
+    ipa_path = Dir["./build/*.ipa"].first
+    UI.user_error!("No IPA file found in build directory") if ipa_path.nil?
     
     # Upload to TestFlight
     pilot(
       api_key: api,
+      ipa: ipa_path,
       skip_waiting_for_build_processing: true,
       beta_app_description: "Fotbollsresan - AI-driven fotbollsträning för barn. Testa alla huvudfunktioner: interaktiva scenarier, XP-system, badges och dagliga utmaningar.",
       beta_app_feedback_email: "feedback@fotbollsresan.se",
