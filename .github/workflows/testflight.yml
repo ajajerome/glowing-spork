@@ -33,7 +33,12 @@ jobs:
       run: |
         cd ios
         xcodegen generate
-        ls -la  # Debug: List generated files
+        echo "=== Generated files in ios/ ==="
+        ls -la
+        echo "=== Checking for workspace files ==="
+        find . -name "*.xcworkspace" -o -name "*.xcodeproj"
+        echo "=== Contents of project.yml ==="
+        cat project.yml
         
     - name: 🔑 Setup App Store Connect API
       env:
