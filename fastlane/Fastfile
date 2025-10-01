@@ -29,6 +29,19 @@ platform :ios do
 
     # First, test that the project compiles for simulator
     UI.message("🧪 Testing compilation for simulator first...")
+    UI.message("📁 Current directory: #{Dir.pwd}")
+    UI.message("🔍 Looking for project at: #{project_path}")
+    
+    # Check if project exists
+    if File.exist?(project_path)
+      UI.success("✅ Project found at #{project_path}")
+    else
+      UI.error("❌ Project NOT found at #{project_path}")
+      UI.message("📂 Contents of ios/ directory:")
+      sh("ls -la ios/")
+      UI.user_error!("Project file does not exist!")
+    end
+    
     sh("xcodebuild -project '#{project_path}' -scheme '#{scheme_name}' -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' clean build")
 
     # If simulator build works, proceed with archive
