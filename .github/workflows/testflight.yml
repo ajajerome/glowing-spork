@@ -47,12 +47,18 @@ jobs:
         ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
         ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+        FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
+        FASTLANE_XCODE_LIST_TIMEOUT: 120
       run: |
         cd ios
+        # Set non-interactive mode
+        export FASTLANE_SKIP_UPDATE_CHECK=1
+        export FASTLANE_HIDE_CHANGELOG=1
+        
         if [ "${{ github.event.inputs.version_type }}" = "release" ]; then
-          fastlane ios release
+          fastlane ios release --verbose
         else
-          fastlane ios beta
+          fastlane ios beta --verbose
         fi
         
     - name: 📊 Upload build artifacts
