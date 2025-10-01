@@ -18,11 +18,14 @@ platform :ios do
     # Increment build number
     increment_build_number(xcodeproj: project_path)
     
-    # Enable automatic code signing
+    # Enable automatic code signing for all configurations
     update_code_signing_settings(
       use_automatic_signing: true,
       path: project_path,
-      team_id: "MW98Z2Q68W"
+      team_id: "MW98Z2Q68W",
+      bundle_identifier: "com.ajagames.learnfotball",
+      code_sign_identity: "Apple Distribution",
+      profile_name: ""
     )
     
     # Build with more explicit settings
