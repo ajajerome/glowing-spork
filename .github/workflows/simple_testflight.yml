@@ -46,11 +46,31 @@ jobs:
         
         echo "✅ Build number set to: $BUILD_NUM"
         
-    - name: 🏗️ Build for App Store
+    - name: 🔑 Setup App Store Connect Authentication
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
       run: |
         cd ios
         
-        # Build and archive (let automatic signing handle identity)
+        # Create API key file for xcodebuild
+        echo "$ASC_API_KEY_P8" > AuthKey_${ASC_KEY_ID}.p8
+        
+        # Set App Store Connect API environment
+        export XCODE_XCCONFIG_FILE=""
+        export ASC_PRIVATE_KEY="./AuthKey_${ASC_KEY_ID}.p8"
+        
+        echo "✅ App Store Connect API configured"
+        
+    - name: 🏗️ Build for App Store
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      run: |
+        cd ios
+        
+        # Build and archive with App Store Connect API auth
         xcodebuild \
           -project Fotbollsresan.xcodeproj \
           -scheme Fotbollsresan \
@@ -58,6 +78,9 @@ jobs:
           -archivePath ./build/Fotbollsresan.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
+          -authenticationKeyPath "./AuthKey_${ASC_KEY_ID}.p8" \
+          -authenticationKeyID "${ASC_KEY_ID}" \
+          -authenticationKeyIssuerID "${ASC_ISSUER_ID}" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
           PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.learnfotball" \
           archive
@@ -128,7 +151,10 @@ jobs:
         
     - name: 🧹 Cleanup
       if: always()
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       run: |
         cd ios
+        rm -f AuthKey_${ASC_KEY_ID}.p8
         rm -f api_key.p8
         rm -rf build/
