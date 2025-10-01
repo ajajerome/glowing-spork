@@ -99,7 +99,11 @@ jobs:
         export FASTLANE_HIDE_CHANGELOG=1
         export CI=true
         
-        # Run fastlane from root directory where fastlane folder exists
+        # Copy fastlane to ios directory to run from there
+        cp -r fastlane ios/
+        cd ios
+        
+        # Run fastlane from ios directory where project exists
         if [ "${{ github.event.inputs.version_type }}" = "release" ]; then
           fastlane ios release --verbose
         else
