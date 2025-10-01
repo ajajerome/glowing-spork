@@ -50,7 +50,7 @@ jobs:
       run: |
         cd ios
         
-        # Build and archive
+        # Build and archive (let automatic signing handle identity)
         xcodebuild \
           -project Fotbollsresan.xcodeproj \
           -scheme Fotbollsresan \
@@ -58,7 +58,6 @@ jobs:
           -archivePath ./build/Fotbollsresan.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
-          CODE_SIGN_IDENTITY="Apple Distribution" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
           PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.learnfotball" \
           archive
