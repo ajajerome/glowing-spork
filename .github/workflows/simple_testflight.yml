@@ -54,14 +54,13 @@ jobs:
       run: |
         cd ios
         
-        # Create API key file for xcodebuild
-        echo "$ASC_API_KEY_P8" > AuthKey_${ASC_KEY_ID}.p8
+        # Create API key file with absolute path
+        API_KEY_PATH="$(pwd)/AuthKey_${ASC_KEY_ID}.p8"
+        echo "$ASC_API_KEY_P8" > "$API_KEY_PATH"
+        chmod 600 "$API_KEY_PATH"
         
-        # Set App Store Connect API environment
-        export XCODE_XCCONFIG_FILE=""
-        export ASC_PRIVATE_KEY="./AuthKey_${ASC_KEY_ID}.p8"
-        
-        echo "✅ App Store Connect API configured"
+        echo "✅ API key created at: $API_KEY_PATH"
+        echo "API_KEY_PATH=$API_KEY_PATH" >> $GITHUB_ENV
         
     - name: 🏗️ Build for App Store
       env:
@@ -78,7 +77,7 @@ jobs:
           -archivePath ./build/Fotbollsresan.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
-          -authenticationKeyPath "./AuthKey_${ASC_KEY_ID}.p8" \
+          -authenticationKeyPath "${API_KEY_PATH}" \
           -authenticationKeyID "${ASC_KEY_ID}" \
           -authenticationKeyIssuerID "${ASC_ISSUER_ID}" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
