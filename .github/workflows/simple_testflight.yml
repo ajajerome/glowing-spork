@@ -59,7 +59,17 @@ jobs:
         echo "$ASC_API_KEY_P8" > "$API_KEY_PATH"
         chmod 600 "$API_KEY_PATH"
         
+        # Validate API key format
+        if grep -q "BEGIN PRIVATE KEY" "$API_KEY_PATH"; then
+          echo "✅ API key format looks correct"
+        else
+          echo "❌ API key format seems wrong - should start with -----BEGIN PRIVATE KEY-----"
+          head -2 "$API_KEY_PATH"
+        fi
+        
         echo "✅ API key created at: $API_KEY_PATH"
+        echo "🔑 Key ID: ${ASC_KEY_ID}"
+        echo "🏢 Issuer ID: ${ASC_ISSUER_ID}"
         echo "API_KEY_PATH=$API_KEY_PATH" >> $GITHUB_ENV
         
     - name: 🏗️ Build for App Store
