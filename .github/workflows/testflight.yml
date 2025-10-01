@@ -32,13 +32,26 @@ jobs:
     - name: 🏗️ Generate Xcode project
       run: |
         cd ios
-        xcodegen generate
-        echo "=== Generated files in ios/ ==="
+        echo "=== Before XcodeGen ==="
         ls -la
-        echo "=== Checking for workspace files ==="
+        
+        xcodegen generate
+        
+        echo "=== After XcodeGen ==="
+        ls -la
+        echo "=== All Xcode files ==="
         find . -name "*.xcworkspace" -o -name "*.xcodeproj"
-        echo "=== Contents of project.yml ==="
+        echo "=== Project.yml contents ==="
         cat project.yml
+        
+        # Verify the expected project exists
+        if [ -f "Fotbollsresan.xcodeproj/project.pbxproj" ]; then
+          echo "✅ Fotbollsresan.xcodeproj found!"
+        else
+          echo "❌ Fotbollsresan.xcodeproj NOT found!"
+          echo "Available files:"
+          find . -name "*.xcodeproj"
+        fi
         
     - name: 🔑 Setup App Store Connect API
       env:
@@ -47,6 +60,18 @@ jobs:
         ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
       run: |
         echo "API keys configured"
+        
+    - name: 🔍 Debug Fastlane setup
+      run: |
+        echo "=== Current directory ==="
+        pwd
+        ls -la
+        echo "=== Fastlane directory ==="
+        ls -la fastlane/
+        echo "=== iOS directory ==="
+        ls -la ios/
+        echo "=== Looking for Xcode files ==="
+        find . -name "*.xcodeproj" -o -name "*.xcworkspace"
         
     - name: 🚀 Deploy to TestFlight
       env:
