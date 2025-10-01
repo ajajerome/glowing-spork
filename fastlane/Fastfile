@@ -23,22 +23,31 @@ platform :ios do
       in_house: false
     )
 
-    # Use the generated project
-    project_path = "ios/Fotbollsresan.xcodeproj"
+    # Use absolute paths to avoid confusion
+    root_dir = Dir.pwd
+    ios_dir = File.join(root_dir, "ios")
+    project_path = File.join(ios_dir, "Fotbollsresan.xcodeproj")
     scheme_name = "Fotbollsresan"
 
-    # First, test that the project compiles for simulator
     UI.message("🧪 Testing compilation for simulator first...")
-    UI.message("📁 Current directory: #{Dir.pwd}")
+    UI.message("📁 Root directory: #{root_dir}")
+    UI.message("📁 iOS directory: #{ios_dir}")
     UI.message("🔍 Looking for project at: #{project_path}")
     
-    # Check if project exists
+    # Check if directories and project exist
+    if Dir.exist?(ios_dir)
+      UI.success("✅ iOS directory found")
+      sh("ls -la '#{ios_dir}'")
+    else
+      UI.error("❌ iOS directory NOT found at #{ios_dir}")
+      sh("ls -la")
+      UI.user_error!("iOS directory does not exist!")
+    end
+    
     if File.exist?(project_path)
       UI.success("✅ Project found at #{project_path}")
     else
       UI.error("❌ Project NOT found at #{project_path}")
-      UI.message("📂 Contents of ios/ directory:")
-      sh("ls -la ios/")
       UI.user_error!("Project file does not exist!")
     end
     

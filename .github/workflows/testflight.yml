@@ -81,6 +81,10 @@ jobs:
         ls -la ios/
         echo "=== Looking for Xcode files ==="
         find . -name "*.xcodeproj" -o -name "*.xcworkspace"
+        echo "=== Absolute paths ==="
+        echo "Root: $(pwd)"
+        echo "iOS: $(pwd)/ios"
+        echo "Project: $(pwd)/ios/Fotbollsresan.xcodeproj"
         
     - name: 🚀 Deploy to TestFlight
       env:
