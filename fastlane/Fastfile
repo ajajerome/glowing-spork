@@ -27,6 +27,13 @@ platform :ios do
     project_path = "ios/Fotbollsresan.xcodeproj"
     scheme_name = "Fotbollsresan"
 
+    # First, test that the project compiles for simulator
+    UI.message("🧪 Testing compilation for simulator first...")
+    sh("xcodebuild -project '#{project_path}' -scheme '#{scheme_name}' -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' clean build")
+
+    # If simulator build works, proceed with archive
+    UI.message("✅ Simulator build successful, proceeding with archive...")
+
     # Increment build number
     increment_build_number(xcodeproj: project_path)
     
@@ -35,38 +42,24 @@ platform :ios do
       use_automatic_signing: true,
       path: project_path,
       team_id: "MW98Z2Q68W",
-      bundle_identifier: "com.ajagames.learnfotball",
-      code_sign_identity: "Apple Distribution",
-      profile_name: ""
+      bundle_identifier: "com.ajagames.learnfotball"
     )
-    
-    # Create export options plist first
-    export_plist = {
-      "method" => "app-store",
-      "uploadBitcode" => false,
-      "uploadSymbols" => true,
-      "compileBitcode" => false,
-      "teamID" => "MW98Z2Q68W"
-    }
-    File.write("./export_options.plist", export_plist.to_plist)
     
     # Create build directory
     sh("mkdir -p build")
     
-    # Build with direct xcodebuild for better error visibility
-    sh("xcodebuild -project '#{project_path}' -scheme '#{scheme_name}' -configuration Release -archivePath './build/Fotbollsresan.xcarchive' -allowProvisioningUpdates -allowProvisioningDeviceRegistration archive")
-    
-    # Export archive
-    sh("xcodebuild -exportArchive -archivePath './build/Fotbollsresan.xcarchive' -exportPath './build' -exportOptionsPlist './export_options.plist' -allowProvisioningUpdates")
-    
-    # Find the generated IPA file
-    ipa_path = Dir["./build/*.ipa"].first
-    UI.user_error!("No IPA file found in build directory") if ipa_path.nil?
+    # Build with gym (simpler than direct xcodebuild)
+    gym(
+      project: project_path,
+      scheme: scheme_name,
+      export_method: "app-store",
+      configuration: "Release",
+      xcargs: "-allowProvisioningUpdates -allowProvisioningDeviceRegistration"
+    )
     
     # Upload to TestFlight
     pilot(
       api_key: api,
-      ipa: ipa_path,
       skip_waiting_for_build_processing: true,
       beta_app_description: "Fotbollsresan - AI-driven fotbollsträning för barn. Testa alla huvudfunktioner: interaktiva scenarier, XP-system, badges och dagliga utmaningar.",
       beta_app_feedback_email: "feedback@fotbollsresan.se",
@@ -75,55 +68,15 @@ platform :ios do
     )
   end
 
-  desc "RELEASE: Build and prepare for App Store release"
-  lane :release do
-    # Setup API
-    api = app_store_connect_api_key(
-      key_id: ENV["ASC_KEY_ID"],
-      issuer_id: ENV["ASC_ISSUER_ID"],
-      key_content: ENV["ASC_API_KEY_P8"],
-      in_house: false
-    )
-
-    # Increment version number
-    increment_version_number(xcodeproj: "ios/Fotbollsresan.xcodeproj")
-    
-    # Enable automatic code signing
-    update_code_signing_settings(
-      use_automatic_signing: true,
-      path: "ios/Fotbollsresan.xcodeproj",
-      team_id: "MW98Z2Q68W"
-    )
-    
-    # Build for release
-    gym(
-      project: "ios/Fotbollsresan.xcodeproj",
-      scheme: "Fotbollsresan", 
-      export_method: "app-store",
-      configuration: "Release",
-      xcargs: "-allowProvisioningUpdates -allowProvisioningDeviceRegistration"
-    )
-    
-    # Upload to App Store Connect (ready for manual release)
-    deliver(
-      api_key: api,
-      force: true,
-      skip_metadata: false,
-      skip_screenshots: false,
-      submit_for_review: false
-    )
-  end
-
   desc "SIM: build iOS Simulator .app and zip as artifact"
   lane :sim do
-    require 'json'
     project = Dir["ios/*.xcodeproj"].first
     UI.user_error!("No Xcode project found in ios directory") if project.nil?
 
     scheme = "Fotbollsresan"
 
     sh("rm -rf build")
-    sh("xcodebuild -project \"#{project}\" -scheme \"#{scheme}\" -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build clean build | xcpretty")
+    sh("xcodebuild -project '#{project}' -scheme '#{scheme}' -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build clean build")
 
     app_path = Dir["build/Build/Products/**/Debug-iphonesimulator/*.app"].first
     UI.user_error!("Simulator .app not found in derived data") if app_path.nil?
