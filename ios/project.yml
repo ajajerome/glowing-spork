@@ -1,4 +1,4 @@
-name: Learnfotball
+name: Fotbollsresan
 options:
   minimumXcodeGenVersion: 2.33.0
   deploymentTarget:
