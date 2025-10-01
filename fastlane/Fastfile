@@ -3,9 +3,9 @@ default_platform(:ios)
 platform :ios do
   desc "CI: tests, build, upload to TestFlight"
   lane :ci do
-    # Setup for SpelSmart project
-    ENV["WORKSPACE"] = "Learnfotball.xcworkspace"
-    ENV["SCHEME"] = "Learnfotball"
+    # Setup for Fotbollsresan project
+    ENV["WORKSPACE"] = "Fotbollsresan.xcworkspace"
+    ENV["SCHEME"] = "Fotbollsresan"
     require 'json'
     api = app_store_connect_api_key(
       key_id: ENV["ASC_KEY_ID"],
@@ -50,11 +50,11 @@ platform :ios do
   desc "BETA: Build and upload to TestFlight for internal testing"
   lane :beta do
     # Increment build number
-    increment_build_number(xcodeproj: "Learnfotball.xcodeproj")
+    increment_build_number(xcodeproj: "Fotbollsresan.xcodeproj")
     
     # Build and upload
     build_app(
-      scheme: "Learnfotball",
+      scheme: "Fotbollsresan",
       export_method: "app-store"
     )
     
@@ -68,11 +68,11 @@ platform :ios do
   desc "RELEASE: Build and prepare for App Store release"
   lane :release do
     # Increment version number
-    increment_version_number(xcodeproj: "Learnfotball.xcodeproj")
+    increment_version_number(xcodeproj: "Fotbollsresan.xcodeproj")
     
     # Build for release
     build_app(
-      scheme: "Learnfotball", 
+      scheme: "Fotbollsresan", 
       export_method: "app-store"
     )
     

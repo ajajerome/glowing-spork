@@ -13,7 +13,7 @@ settings:
     CURRENT_PROJECT_VERSION: 1
     MARKETING_VERSION: 0.1.0
 targets:
-  Learnfotball:
+  Fotbollsresan:
     type: application
     platform: iOS
     sources:
@@ -28,8 +28,8 @@ targets:
     info:
       path: Info.plist
       properties:
-        CFBundleName: Learnfotball
-        CFBundleDisplayName: Learnfotball
+        CFBundleName: Fotbollsresan
+        CFBundleDisplayName: Fotbollsresan
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UISupportedInterfaceOrientations~ipad:

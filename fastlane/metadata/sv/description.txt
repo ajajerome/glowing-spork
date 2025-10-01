@@ -1,4 +1,4 @@
-SpelSmart revolutionerar fotbollsträning genom AI-driven spelförståelse. Istället för att fokusera på teknisk färdighet, utvecklar appen barns taktiska tänkande genom interaktiva matchscenarier.
+Fotbollsresan revolutionerar fotbollsträning genom AI-driven spelförståelse. Istället för att fokusera på teknisk färdighet, utvecklar appen barns taktiska tänkande genom interaktiva matchscenarier.
 
 🧠 HUVUDFUNKTIONER
 • Interaktiva fotbollsscenarier med realistiska beslutspunkter
