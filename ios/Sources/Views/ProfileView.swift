@@ -5,6 +5,7 @@ struct ProfileView: View {
     @ObservedObject private var avatarStore = AvatarStore.shared
     @State private var showingBadges = false
     @State private var showingSkillDetails = false
+    @State private var showingCoachMode = false
     @State private var selectedSkill: TacticalSkill?
     
     var body: some View {
@@ -34,6 +35,11 @@ struct ProfileView: View {
             .navigationTitle("Min Profil")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Coach") {
+                        showingCoachMode = true
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Badges") {
                         showingBadges = true
@@ -48,6 +54,9 @@ struct ProfileView: View {
             if let skill = selectedSkill {
                 SkillDetailView(skill: skill)
             }
+        }
+        .fullScreenCover(isPresented: $showingCoachMode) {
+            CoachModeView()
         }
         .alert("Ny Badge Upplåst! 🎉", isPresented: .constant(progressStore.newBadgeAlert != nil)) {
             Button("Fantastiskt!") {

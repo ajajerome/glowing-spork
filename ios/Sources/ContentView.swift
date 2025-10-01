@@ -8,10 +8,10 @@ struct ContentView: View {
                 .tabItem { Label("SpelSmart", systemImage: "brain.head.profile") }
             DailyChallengeView()
                 .tabItem { Label("Utmaningar", systemImage: "flame.fill") }
+            InsightsView()
+                .tabItem { Label("Insikter", systemImage: "chart.line.uptrend.xyaxis") }
             ProfileView()
                 .tabItem { Label("Profil", systemImage: "person.crop.square") }
-            TrainingView()
-                .tabItem { Label("Träna", systemImage: "sportscourt") }
             AvatarView()
                 .tabItem { Label("Avatar", systemImage: "person.crop.circle") }
         }
