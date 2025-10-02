@@ -6,7 +6,7 @@ final class ScenarioService {
     private var library: ScenarioLibrary
     
     private init() {
-        library = ScenarioLibrary(scenarios: [])
+        library = ScenarioLibrary(scenarios: [], collections: [])
         library = loadBundledScenarios()
     }
     
