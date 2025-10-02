@@ -109,16 +109,12 @@ jobs:
           exit 1
         fi
         
-        # Copy fastlane to ios directory to run from there
-        cp -r fastlane ios/
-        cd ios
-        
-        # Final verification before Fastlane
-        echo "=== Final check before Fastlane ==="
+        # Run fastlane from root directory with absolute paths
+        echo "=== Running Fastlane from root directory ==="
         pwd
-        ls -la
+        ls -la ios/
         
-        # Run fastlane from ios directory where project exists
+        # Run fastlane from root directory
         if [ "${{ github.event.inputs.version_type }}" = "release" ]; then
           fastlane ios release --verbose
         else

@@ -23,10 +23,11 @@ platform :ios do
       in_house: false
     )
 
-    # Find the actual project file dynamically
-    project_files = Dir.glob("*.xcodeproj")
+    # Use absolute paths from root directory
+    ios_dir = "ios"
+    project_files = Dir.glob("#{ios_dir}/*.xcodeproj")
     if project_files.empty?
-      UI.user_error!("❌ No .xcodeproj files found in current directory!")
+      UI.user_error!("❌ No .xcodeproj files found in #{ios_dir}/ directory!")
     end
     
     project_path = project_files.first
