@@ -6,7 +6,7 @@ protocol TrainingSceneDelegate {
 }
 
 final class DelegatingTrainingScene: TrainingScene {
-    weak var trainingDelegate: TrainingSceneDelegate?
+    var trainingDelegate: TrainingSceneDelegate?
     private var lastRunningState: Bool = false
 
     override func update(_ currentTime: TimeInterval) {

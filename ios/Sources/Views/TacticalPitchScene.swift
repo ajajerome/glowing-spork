@@ -9,7 +9,7 @@ protocol TacticalPitchDelegate {
 final class TacticalPitchScene: SKScene {
     
     // MARK: - Properties
-    weak var tacticalDelegate: TacticalPitchDelegate?
+    var tacticalDelegate: TacticalPitchDelegate?
     
     private var currentScenario: GameScenario?
     private var playerNodes: [String: SKNode] = [:]
