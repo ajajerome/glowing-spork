@@ -122,7 +122,7 @@ jobs:
       run: |
         cd ios
         
-        # Export
+        # Export with automatic provisioning profile creation
         cat > export.plist << 'EOF'
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -132,6 +132,10 @@ jobs:
           <string>app-store-connect</string>
           <key>teamID</key>
           <string>MW98Z2Q68W</string>
+          <key>manageAppVersionAndBuildNumber</key>
+          <false/>
+          <key>signingStyle</key>
+          <string>automatic</string>
         </dict>
         </plist>
         EOF
