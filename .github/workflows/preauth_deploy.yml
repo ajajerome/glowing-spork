@@ -68,12 +68,19 @@ jobs:
       env:
         APPLE_ID: ${{ github.event.inputs.apple_id }}
         APP_PASSWORD: ${{ github.event.inputs.app_password }}
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
       run: |
         cd ios
         
-        echo "🏗️ Building for device with pre-established connection..."
+        echo "🏗️ Building for device with API key authentication..."
         
-        # Now try device build with established connection
+        # Create API key file for authentication
+        API_KEY_PATH="$(pwd)/AuthKey_${ASC_KEY_ID}.p8"
+        echo "$ASC_API_KEY_P8" > "$API_KEY_PATH"
+        
+        # Now try device build with API key authentication
         xcodebuild \
           -project TaktikTräning.xcodeproj \
           -scheme TaktikTräning \
@@ -81,6 +88,9 @@ jobs:
           -archivePath ./build/TaktikTräning.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
+          -authenticationKeyPath "$API_KEY_PATH" \
+          -authenticationKeyID "$ASC_KEY_ID" \
+          -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
           PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
           archive
@@ -91,6 +101,9 @@ jobs:
       env:
         APPLE_ID: ${{ github.event.inputs.apple_id }}
         APP_PASSWORD: ${{ github.event.inputs.app_password }}
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
       run: |
         cd ios
         
