@@ -80,6 +80,21 @@ jobs:
         API_KEY_PATH="$(pwd)/AuthKey_${ASC_KEY_ID}.p8"
         echo "$ASC_API_KEY_P8" > "$API_KEY_PATH"
         
+        # Debug API key
+        echo "🔑 API Key ID: ${ASC_KEY_ID}"
+        echo "🔑 Issuer ID: ${ASC_ISSUER_ID}"
+        echo "🔑 API Key file size: $(wc -c < "$API_KEY_PATH") bytes"
+        if head -1 "$API_KEY_PATH" | grep -q "BEGIN PRIVATE KEY"; then
+          echo "✅ API key has correct format"
+        else
+          echo "❌ API key missing headers - adding them..."
+          mv "$API_KEY_PATH" "${API_KEY_PATH}.tmp"
+          echo "-----BEGIN PRIVATE KEY-----" > "$API_KEY_PATH"
+          cat "${API_KEY_PATH}.tmp" >> "$API_KEY_PATH"
+          echo "-----END PRIVATE KEY-----" >> "$API_KEY_PATH"
+          rm "${API_KEY_PATH}.tmp"
+        fi
+        
         # Now try device build with API key authentication
         xcodebuild \
           -project TaktikTräning.xcodeproj \
