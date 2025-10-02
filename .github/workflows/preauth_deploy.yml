@@ -1,0 +1,129 @@
+name: Pre-Auth Deploy TaktikTraning
+
+on:
+  workflow_dispatch:
+    inputs:
+      apple_id:
+        description: 'Apple ID email'
+        required: true
+      app_password:
+        description: 'App-specific password'  
+        required: true
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+        
+    - name: Install tools
+      run: brew install xcodegen
+        
+    - name: Generate project
+      run: |
+        cd ios
+        xcodebuild -version
+        xcodegen generate
+        
+    - name: Pre-authenticate with Apple
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        echo "🍎 Pre-authenticating with Apple Developer Portal..."
+        
+        # Test that credentials work
+        xcrun altool --list-apps -u "$APPLE_ID" -p "$APP_PASSWORD"
+        
+        if [ $? -eq 0 ]; then
+          echo "✅ Apple ID credentials verified"
+        else
+          echo "❌ Apple ID credentials failed"
+          exit 1
+        fi
+        
+        # Try to trigger provisioning profile creation
+        cd ios
+        echo "🔧 Triggering provisioning profile creation..."
+        
+        # Create a simple build first to establish connection
+        xcodebuild \
+          -project TaktikTräning.xcodeproj \
+          -scheme TaktikTräning \
+          -configuration Debug \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 15' \
+          DEVELOPMENT_TEAM="MW98Z2Q68W" \
+          PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
+          clean build
+          
+        echo "✅ Simulator build completed - connection established"
+        
+    - name: Build for device with established connection
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        cd ios
+        
+        echo "🏗️ Building for device with pre-established connection..."
+        
+        # Now try device build with established connection
+        xcodebuild \
+          -project TaktikTräning.xcodeproj \
+          -scheme TaktikTräning \
+          -configuration Release \
+          -archivePath ./build/TaktikTräning.xcarchive \
+          -allowProvisioningUpdates \
+          -allowProvisioningDeviceRegistration \
+          DEVELOPMENT_TEAM="MW98Z2Q68W" \
+          PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
+          archive
+          
+        echo "✅ Archive created!"
+        
+    - name: Export and Upload
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        cd ios
+        
+        # Export
+        cat > export.plist << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>method</key>
+          <string>app-store</string>
+          <key>teamID</key>
+          <string>MW98Z2Q68W</string>
+        </dict>
+        </plist>
+        EOF
+        
+        xcodebuild \
+          -exportArchive \
+          -archivePath ./build/TaktikTräning.xcarchive \
+          -exportPath ./build \
+          -exportOptionsPlist ./export.plist
+        
+        # Upload
+        IPA_FILE=$(find ./build -name "*.ipa" | head -1)
+        echo "Found IPA: $IPA_FILE"
+        
+        xcrun altool \
+          --upload-app \
+          --type ios \
+          --file "$IPA_FILE" \
+          --username "$APPLE_ID" \
+          --password "$APP_PASSWORD"
+        
+        echo "🎉 TaktikTräning uploaded to TestFlight!"
+        echo "📱 Check TestFlight app on your iPhone in 5-10 minutes!"
