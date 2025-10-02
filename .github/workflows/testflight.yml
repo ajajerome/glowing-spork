@@ -99,9 +99,24 @@ jobs:
         export FASTLANE_HIDE_CHANGELOG=1
         export CI=true
         
+        # Verify that XcodeGen worked and project exists
+        if [ -f "ios/TaktikTräning.xcodeproj/project.pbxproj" ]; then
+          echo "✅ TaktikTräning.xcodeproj found - proceeding with Fastlane"
+        else
+          echo "❌ TaktikTräning.xcodeproj not found!"
+          echo "Contents of ios/:"
+          ls -la ios/
+          exit 1
+        fi
+        
         # Copy fastlane to ios directory to run from there
         cp -r fastlane ios/
         cd ios
+        
+        # Final verification before Fastlane
+        echo "=== Final check before Fastlane ==="
+        pwd
+        ls -la
         
         # Run fastlane from ios directory where project exists
         if [ "${{ github.event.inputs.version_type }}" = "release" ]; then
