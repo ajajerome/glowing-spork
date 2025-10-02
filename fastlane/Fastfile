@@ -56,7 +56,7 @@ platform :ios do
       use_automatic_signing: true,
       path: project_path,
       team_id: "MW98Z2Q68W",
-      bundle_identifier: "com.ajagames.fotbollsresan"
+      bundle_identifier: "com.ajagames.taktiktraning"
     )
     
     # Create build directory
