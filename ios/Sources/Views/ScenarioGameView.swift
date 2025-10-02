@@ -1,12 +1,13 @@
 import SwiftUI
 import SpriteKit
 
-struct ScenarioGameView: View, TacticalPitchDelegate {
+struct ScenarioGameView: View {
     @ObservedObject private var avatarStore = AvatarStore.shared
     @ObservedObject private var progressStore = GameProgressStore.shared
     @State private var currentScenario: GameScenario?
     @State private var scene = TacticalPitchScene()
     @State private var showingScenarioSelector = false
+    @State private var delegate: ScenarioGameDelegate?
     @State private var gameScore = 0
     @State private var xpEarned = 0
     @State private var skillsImproved: [TacticalSkill] = []

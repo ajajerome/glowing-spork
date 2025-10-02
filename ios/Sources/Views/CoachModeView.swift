@@ -175,17 +175,4 @@ struct CoachAnalysisView: View {
 
 // MARK: - Extensions
 
-private extension TacticalSkill {
-    var displayName: String {
-        switch self {
-        case .vision: return "Spelöverskåd"
-        case .positioning: return "Positionering"
-        case .timing: return "Timing"
-        case .communication: return "Kommunikation"
-        case .decisionMaking: return "Beslut"
-        case .spatialAwareness: return "Rumsuppfattning"
-        case .pressureHandling: return "Presshantering"
-        case .teamwork: return "Lagarbete"
-        }
-    }
-}
+// TacticalSkill.displayName extension finns redan i ProgressTracker.swift
