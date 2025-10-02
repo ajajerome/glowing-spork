@@ -140,14 +140,14 @@ jobs:
         </plist>
         EOF
         
-        # Export with minimal options - let xcodebuild handle everything
-        echo "🔧 Exporting with minimal configuration..."
+        # Export with correct syntax using exportOptionsPlist
+        echo "🔧 Exporting with correct xcodebuild syntax..."
         
         xcodebuild \
           -exportArchive \
           -archivePath ./build/TaktikTräning.xcarchive \
           -exportPath ./build \
-          -exportMethod app-store \
+          -exportOptionsPlist ./export.plist \
           -authenticationKeyPath "$API_KEY_PATH" \
           -authenticationKeyID "$ASC_KEY_ID" \
           -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
