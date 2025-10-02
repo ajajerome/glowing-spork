@@ -27,48 +27,39 @@ platform :ios do
     project_path = "TaktikTräning.xcodeproj"
     scheme_name = "TaktikTräning"
 
-    UI.message("🧪 Testing compilation for simulator first...")
+    UI.message("🧪 Building TaktikTräning for TestFlight...")
     UI.message("📁 Current directory: #{Dir.pwd}")
-    UI.message("🔍 Looking for project at: #{project_path}")
+    UI.message("🔍 Project: #{project_path}")
+    UI.message("📱 Bundle ID: com.ajagames.taktiktraning")
+    UI.message("👥 Team ID: MW98Z2Q68W")
     
     # List current directory contents
-    UI.message("📂 Current directory contents:")
     sh("ls -la")
     
     # Check if project exists
-    if File.exist?(project_path)
-      UI.success("✅ Project found at #{project_path}")
-    else
-      UI.error("❌ Project NOT found at #{project_path}")
-      UI.user_error!("Project file does not exist!")
+    unless File.exist?(project_path)
+      UI.user_error!("❌ Project file #{project_path} does not exist!")
     end
-    
-    sh("xcodebuild -project '#{project_path}' -scheme '#{scheme_name}' -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' clean build")
-
-    # If simulator build works, proceed with archive
-    UI.message("✅ Simulator build successful, proceeding with archive...")
+    UI.success("✅ Project found at #{project_path}")
 
     # Increment build number
     increment_build_number(xcodeproj: project_path)
     
-    # Enable automatic code signing for all configurations
-    update_code_signing_settings(
-      use_automatic_signing: true,
-      path: project_path,
-      team_id: "MW98Z2Q68W",
-      bundle_identifier: "com.ajagames.taktiktraning"
-    )
-    
-    # Create build directory
-    sh("mkdir -p build")
-    
-    # Build with gym (simpler than direct xcodebuild)
+    # Build with gym - let automatic signing handle everything
     gym(
       project: project_path,
       scheme: scheme_name,
       export_method: "app-store",
       configuration: "Release",
-      xcargs: "-allowProvisioningUpdates -allowProvisioningDeviceRegistration"
+      xcargs: "-allowProvisioningUpdates -allowProvisioningDeviceRegistration",
+      export_options: {
+        method: "app-store",
+        uploadBitcode: false,
+        uploadSymbols: true,
+        compileBitcode: false,
+        teamID: "MW98Z2Q68W",
+        signingStyle: "automatic"
+      }
     )
     
     # Upload to TestFlight
