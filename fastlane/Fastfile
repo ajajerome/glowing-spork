@@ -83,9 +83,26 @@ platform :ios do
 
     # Create API key file for xcodebuild authentication
     api_key_path = "#{ENV['HOME']}/AuthKey_#{ENV['ASC_KEY_ID']}.p8"
+    UI.message("🔑 Creating API key file...")
+    UI.message("📁 API key path: #{api_key_path}")
+    UI.message("🔑 Key ID: #{ENV['ASC_KEY_ID']}")
+    UI.message("🏢 Issuer ID: #{ENV['ASC_ISSUER_ID']}")
+    
     File.write(api_key_path, ENV['ASC_API_KEY_P8'])
     File.chmod(0600, api_key_path)
-    UI.message("🔑 Created API key at: #{api_key_path}")
+    
+    # Verify API key file was created correctly
+    if File.exist?(api_key_path)
+      UI.success("✅ API key file created successfully")
+      UI.message("📊 File size: #{File.size(api_key_path)} bytes")
+      if File.read(api_key_path).include?("BEGIN PRIVATE KEY")
+        UI.success("✅ API key format looks correct")
+      else
+        UI.error("❌ API key format seems wrong")
+      end
+    else
+      UI.error("❌ Failed to create API key file")
+    end
 
     # Increment build number with absolute path
     absolute_project_path = File.expand_path(project_path)
