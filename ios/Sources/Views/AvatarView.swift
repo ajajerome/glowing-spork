@@ -108,8 +108,8 @@ struct AvatarView: View {
         jerseyNumber = a.jerseyNumber
         ageBand = a.ageBand
         favoritePosition = a.favoritePosition
-        jerseyColor = Color(hex: a.jerseyColorHex) ?? jerseyColor
-        skinTone = Color(hex: a.skinToneHex) ?? skinTone
+        jerseyColor = Color(UIColor(hex: a.jerseyColorHex) ?? UIColor(jerseyColor))
+        skinTone = Color(UIColor(hex: a.skinToneHex) ?? UIColor(skinTone))
         hairStyle = a.hairStyle
     }
 

@@ -188,8 +188,8 @@ struct BadgeUnlockNotification: View {
         .background(
             LinearGradient(
                 colors: [
-                    Color(hex: badge.rarity.color)?.opacity(0.8) ?? .gray,
-                    Color(hex: badge.rarity.color)?.opacity(0.6) ?? .gray
+                    Color(UIColor(hex: badge.rarity.color) ?? .gray).opacity(0.8),
+                    Color(UIColor(hex: badge.rarity.color) ?? .gray).opacity(0.6)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing

@@ -820,7 +820,7 @@ struct PlayerSelectorView: View {
                     }) {
                         HStack {
                             Circle()
-                                .fill(Color(hex: avatar.jerseyColorHex) ?? .blue)
+                                .fill(Color(UIColor(hex: avatar.jerseyColorHex) ?? .blue))
                                 .frame(width: 40, height: 40)
                                 .overlay(
                                     Text("\(avatar.jerseyNumber)")

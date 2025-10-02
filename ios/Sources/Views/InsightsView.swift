@@ -1,5 +1,4 @@
 import SwiftUI
-import Charts
 
 struct InsightsView: View {
     @ObservedObject private var progressTracker = ProgressTracker.shared

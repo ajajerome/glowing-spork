@@ -76,8 +76,8 @@ struct ProfileView: View {
                 Circle()
                     .fill(LinearGradient(
                         colors: [
-                            Color(hex: progressStore.progress.currentRank.color) ?? .blue,
-                            Color(hex: progressStore.progress.currentRank.color)?.opacity(0.6) ?? .blue
+                            Color(UIColor(hex: progressStore.progress.currentRank.color) ?? .blue),
+                            Color(UIColor(hex: progressStore.progress.currentRank.color) ?? .blue).opacity(0.6)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -394,11 +394,11 @@ struct BadgeMiniView: View {
         }
         .frame(width: 60, height: 60)
         .padding(8)
-        .background(Color(hex: badge.rarity.color)?.opacity(0.2) ?? Color.gray.opacity(0.2))
+        .background(Color(UIColor(hex: badge.rarity.color) ?? .gray).opacity(0.2))
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: badge.rarity.color) ?? .gray, lineWidth: 2)
+                .stroke(Color(UIColor(hex: badge.rarity.color) ?? .gray), lineWidth: 2)
         )
     }
 }
