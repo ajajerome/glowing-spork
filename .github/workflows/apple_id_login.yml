@@ -44,25 +44,22 @@ jobs:
         /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUM" Info.plist
         echo "✅ Build number set to: $BUILD_NUM"
         
-    - name: 🍎 Login with Apple ID
+    - name: 🍎 Test Apple ID Authentication
       env:
         APPLE_ID: ${{ github.event.inputs.apple_id }}
         APP_PASSWORD: ${{ github.event.inputs.app_password }}
       run: |
-        echo "🍎 Logging in with Apple ID..."
+        echo "🍎 Testing Apple ID authentication..."
         
-        # Create credentials for xcrun altool
-        echo "Creating app-specific password file..."
-        echo "$APP_PASSWORD" | xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID" -p @env:APP_PASSWORD
-        
-        # Verify login works
-        echo "🔍 Testing Apple ID authentication..."
-        xcrun altool --list-apps -u "$APPLE_ID" -p "@keychain:AC_PASSWORD" --output-format xml
+        # Test authentication directly with app-specific password
+        echo "🔍 Testing login with altool..."
+        xcrun altool --list-apps -u "$APPLE_ID" -p "$APP_PASSWORD" --output-format xml
         
         if [ $? -eq 0 ]; then
           echo "✅ Apple ID authentication successful!"
         else
           echo "❌ Apple ID authentication failed"
+          echo "💡 Make sure you're using an app-specific password, not your regular password"
           exit 1
         fi
         
@@ -139,24 +136,20 @@ jobs:
         
         echo "✅ Found IPA: $IPA_FILE"
         
-        # Upload using xcrun altool with stored password
+        # Upload using xcrun altool with app-specific password
         echo "🚀 Uploading to TestFlight..."
         xcrun altool \
           --upload-app \
           --type ios \
           --file "$IPA_FILE" \
           --username "$APPLE_ID" \
-          --password "@keychain:AC_PASSWORD"
+          --password "${{ github.event.inputs.app_password }}"
           
         echo "🎉 Upload to TestFlight completed!"
         
     - name: 🧹 Cleanup
       if: always()
-      env:
-        APPLE_ID: ${{ github.event.inputs.apple_id }}
       run: |
         cd ios
-        # Remove stored password from keychain
-        security delete-generic-password -s "AC_PASSWORD" 2>/dev/null || true
         rm -rf build/
         echo "✅ Cleanup completed"
