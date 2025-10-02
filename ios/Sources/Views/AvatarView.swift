@@ -33,7 +33,7 @@ struct AvatarView: View {
                             Text(band.rawValue).tag(band)
                         }
                     }.pickerStyle(.segmented)
-                    .onChange(of: birthDate) { _, newVal in
+                    .onChange(of: birthDate) { newVal in
                         let years = Calendar.current.dateComponents([.year], from: newVal, to: Date()).year ?? 0
                         ageBand = AgeBand.from(ageYears: years)
                     }

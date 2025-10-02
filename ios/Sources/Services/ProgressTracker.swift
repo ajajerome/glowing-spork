@@ -299,7 +299,8 @@ struct WeeklyProgress: Codable {
     }
 }
 
-struct SessionSummary: Codable {
+struct SessionSummary: Codable, Identifiable {
+    let id = UUID()
     let date: Date
     let score: Double
     let duration: TimeInterval

@@ -133,7 +133,8 @@ enum TacticalAction: String, Codable, CaseIterable {
     case scan = "scanna"
 }
 
-enum TacticalSkill: String, Codable, CaseIterable {
+enum TacticalSkill: String, Codable, CaseIterable, Identifiable {
+    var id: String { rawValue }
     case vision = "spelöverskåd"
     case positioning = "positionering"
     case timing = "timing"

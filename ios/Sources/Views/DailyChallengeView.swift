@@ -1,4 +1,5 @@
 import SwiftUI
+import SpriteKit
 
 struct DailyChallengeView: View {
     @ObservedObject private var challengeService = DailyChallengeService.shared
