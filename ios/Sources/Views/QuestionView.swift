@@ -12,7 +12,7 @@ struct QuestionView: View {
             Text(question.stem).font(.title3)
 
             if let choices = question.choices {
-                ForEach(choices.indices, id: \\.self) { idx in
+                ForEach(choices.indices, id: \.self) { idx in
                     Button(action: { selectedIndex = idx }) {
                         HStack {
                             Image(systemName: selectedIndex == idx ? "largecircle.fill.circle" : "circle")

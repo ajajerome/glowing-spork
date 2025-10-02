@@ -21,7 +21,7 @@ struct TrainerEditorView: View {
                         Text("Försvar").tag("defence")
                         Text("Omställning").tag("transition")
                     }
-                    ForEach(draft.choices.indices, id: \\.self) { idx in
+                    ForEach(draft.choices.indices, id: \.self) { idx in
                         TextField("Svar \(idx+1)", text: Binding(
                             get: { idx < draft.choices.count ? draft.choices[idx] : "" },
                             set: {
@@ -33,7 +33,7 @@ struct TrainerEditorView: View {
                         get: { draft.correctIndex ?? 0 },
                         set: { draft.correctIndex = $0 }
                     )) {
-                        ForEach(0..<(max(draft.choices.count, 3)), id: \\.self) { i in Text("Svar #\(i+1)").tag(i) }
+                        ForEach(0..<(max(draft.choices.count, 3)), id: \.self) { i in Text("Svar #\(i+1)").tag(i) }
                     }
                     Button("Lägg till val") { draft.choices.append("") }
                     Button("Spara utkast") { saveDraft() }
