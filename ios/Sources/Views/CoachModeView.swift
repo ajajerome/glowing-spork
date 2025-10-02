@@ -50,7 +50,7 @@ struct CoachOverviewView: View {
                 VStack {
                     Text("Nuvarande Nivå")
                         .font(.headline)
-                    Text("\(progressStore.progress.currentLevel)")
+                    Text("\(progressStore.progress.level)")
                         .font(.largeTitle)
                         .bold()
                         .foregroundColor(.blue)

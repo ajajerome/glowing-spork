@@ -130,18 +130,18 @@ final class TacticalPitchScene: SKScene {
         // Simple decision selection based on touch location
         if location.x < size.width / 3 {
             // Left side - defensive decision
-            if let decision = scenario.options.first {
+            if let decision = scenario.decisions.first {
                 tacticalDelegate?.decisionSelected(decision, in: scenario)
             }
         } else if location.x > 2 * size.width / 3 {
             // Right side - attacking decision
-            if let decision = scenario.options.last {
+            if let decision = scenario.decisions.last {
                 tacticalDelegate?.decisionSelected(decision, in: scenario)
             }
         } else {
             // Center - neutral decision
-            if scenario.options.count > 1 {
-                let decision = scenario.options[1]
+            if scenario.decisions.count > 1 {
+                let decision = scenario.decisions[1]
                 tacticalDelegate?.decisionSelected(decision, in: scenario)
             }
         }

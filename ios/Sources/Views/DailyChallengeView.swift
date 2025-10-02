@@ -288,7 +288,7 @@ struct ChallengeGameView: View {
         .onAppear {
             scene.size = CGSize(width: 400, height: 600)
             scene.scaleMode = .aspectFit
-            scene.presentScenario(challenge.scenario)
+            scene.loadScenario(challenge.scenario)
         }
     }
 }
