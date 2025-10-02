@@ -280,7 +280,7 @@ struct WeeklyProgress: Codable {
             date: session.startAt ?? Date(),
             score: Double(session.score),
             duration: session.durationSec ?? 0,
-            excellentCount: decisions.count { $0.outcome.success == .excellent }
+            excellentCount: decisions.filter { $0.outcome.success == .excellent }.count
         )
         
         sessions.append(summary)
@@ -431,7 +431,7 @@ struct LearningPath: Codable {
         let averageOutcome = decisions.map { $0.outcome.success.rawValue }.reduce("", +)
         
         // Simple progression logic
-        if decisions.count { $0.outcome.success == .excellent } >= 3 {
+        if decisions.filter { $0.outcome.success == .excellent }.count >= 3 {
             advanceIfReady()
         }
     }

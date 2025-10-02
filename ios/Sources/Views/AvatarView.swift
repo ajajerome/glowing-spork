@@ -33,8 +33,8 @@ struct AvatarView: View {
                             Text(band.rawValue).tag(band)
                         }
                     }.pickerStyle(.segmented)
-                    .onChange(of: birthDate) { newVal in
-                        let years = Calendar.current.dateComponents([.year], from: newVal, to: Date()).year ?? 0
+                    .onChange(of: birthDate) {
+                        let years = Calendar.current.dateComponents([.year], from: birthDate, to: Date()).year ?? 0
                         ageBand = AgeBand.from(ageYears: years)
                     }
                 }
@@ -108,8 +108,12 @@ struct AvatarView: View {
         jerseyNumber = a.jerseyNumber
         ageBand = a.ageBand
         favoritePosition = a.favoritePosition
-        jerseyColor = Color(UIColor(hex: a.jerseyColorHex) ?? UIColor(jerseyColor))
-        skinTone = Color(UIColor(hex: a.skinToneHex) ?? UIColor(skinTone))
+        if let hexColor = UIColor(hex: a.jerseyColorHex) {
+            jerseyColor = Color(hexColor)
+        }
+        if let hexColor = UIColor(hex: a.skinToneHex) {
+            skinTone = Color(hexColor)
+        }
         hairStyle = a.hairStyle
     }
 
