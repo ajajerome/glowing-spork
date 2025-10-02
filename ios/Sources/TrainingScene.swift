@@ -197,7 +197,7 @@ class TrainingScene: SKScene, SKPhysicsContactDelegate {
     // Apply avatar styling
     func applyAvatarStyling(name: String?, number: Int?, jerseyHex: String?) {
         if let hex = jerseyHex, let color = UIColor(hex: hex) {
-            playerNode.fillColor = SKColor(color)
+            playerNode.fillColor = color
         }
         if let number = number {
             numberLabel.text = "\(number)"

@@ -83,7 +83,7 @@ struct TrainingView: View, TrainingSceneDelegate {
     private var header: some View {
         HStack {
             if let a = avatarStore.avatar {
-                Circle().fill(Color(hex: a.jerseyColorHex) ?? .blue)
+                Circle().fill(Color(UIColor(hex: a.jerseyColorHex) ?? .blue))
                     .frame(width: 36, height: 36)
                     .overlay(Text("\(a.jerseyNumber)").font(.footnote).bold().foregroundColor(.white))
                 VStack(alignment: .leading, spacing: 2) {
