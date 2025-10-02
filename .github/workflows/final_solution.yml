@@ -51,48 +51,48 @@ jobs:
         cd ios
         
         # Create expect script
-        cat > build.exp << 'EOF'
-#!/usr/bin/expect -f
-set timeout 300
-set apple_id [lindex $argv 0]
-set password [lindex $argv 1]
-
-spawn xcodebuild -project TaktikTräning.xcodeproj -scheme TaktikTräning -configuration Release -archivePath ./build/TaktikTräning.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=MW98Z2Q68W PRODUCT_BUNDLE_IDENTIFIER=com.ajagames.taktiktraning archive
-
-expect {
-    "Apple ID:" {
-        send "$apple_id\r"
-        exp_continue
-    }
-    "Password:" {
-        send "$password\r"
-        exp_continue
-    }
-    "Enter your password:" {
-        send "$password\r"
-        exp_continue
-    }
-    "Continue" {
-        send "\r"
-        exp_continue
-    }
-    "ARCHIVE SUCCEEDED" {
-        puts "SUCCESS: Archive created!"
-        exit 0
-    }
-    "ARCHIVE FAILED" {
-        puts "ERROR: Archive failed"
-        exit 1
-    }
-    eof {
-        exit 0
-    }
-    timeout {
-        puts "TIMEOUT: Build took too long"
-        exit 1
-    }
-}
-EOF
+        cat > build.exp << 'EXPECTEOF'
+        #!/usr/bin/expect -f
+        set timeout 300
+        set apple_id [lindex $argv 0]
+        set password [lindex $argv 1]
+        
+        spawn xcodebuild -project TaktikTräning.xcodeproj -scheme TaktikTräning -configuration Release -archivePath ./build/TaktikTräning.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=MW98Z2Q68W PRODUCT_BUNDLE_IDENTIFIER=com.ajagames.taktiktraning archive
+        
+        expect {
+            "Apple ID:" {
+                send "$apple_id\r"
+                exp_continue
+            }
+            "Password:" {
+                send "$password\r"
+                exp_continue
+            }
+            "Enter your password:" {
+                send "$password\r"
+                exp_continue
+            }
+            "Continue" {
+                send "\r"
+                exp_continue
+            }
+            "ARCHIVE SUCCEEDED" {
+                puts "SUCCESS!"
+                exit 0
+            }
+            "ARCHIVE FAILED" {
+                puts "FAILED!"
+                exit 1
+            }
+            eof {
+                exit 0
+            }
+            timeout {
+                puts "TIMEOUT!"
+                exit 1
+            }
+        }
+        EXPECTEOF
         
         chmod +x build.exp
         ./build.exp "$APPLE_ID" "$APP_PASSWORD"
@@ -101,7 +101,7 @@ EOF
       run: |
         cd ios
         
-        cat > export.plist << EOF
+        cat > export.plist << 'EXPORTEOF'
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
@@ -112,7 +112,7 @@ EOF
             <string>MW98Z2Q68W</string>
         </dict>
         </plist>
-        EOF
+        EXPORTEOF
         
         xcodebuild -exportArchive -archivePath ./build/TaktikTräning.xcarchive -exportPath ./build -exportOptionsPlist ./export.plist -allowProvisioningUpdates
         
