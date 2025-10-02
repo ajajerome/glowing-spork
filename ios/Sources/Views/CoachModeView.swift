@@ -318,7 +318,8 @@ struct CoachProgressView: View {
                 SkillProgressRow(
                     skillData: SkillRadarPoint(
                         skill: skill,
-                        value: Double(progressStore.progress.skillLevel(for: skill))
+                        level: progressStore.progress.skillLevel(for: skill),
+                        progress: progressStore.progress.skillProgress(for: skill)
                     ),
                     onTap: { }
                 )
