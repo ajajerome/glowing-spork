@@ -25,8 +25,23 @@ platform :ios do
 
     # Use absolute paths from root directory
     ios_dir = "ios"
+    
+    UI.message("🔍 Debugging Dir.glob...")
+    UI.message("📁 Current working directory: #{Dir.pwd}")
+    UI.message("📂 Looking in: #{ios_dir}/")
+    UI.message("🎯 Glob pattern: #{ios_dir}/*.xcodeproj")
+    
     project_files = Dir.glob("#{ios_dir}/*.xcodeproj")
+    UI.message("📋 Dir.glob result: #{project_files.inspect}")
+    UI.message("📊 Found #{project_files.length} project files")
+    
     if project_files.empty?
+      UI.error("❌ Dir.glob returned empty array!")
+      UI.message("🔍 Let's try different approaches:")
+      UI.message("📂 Dir.entries('#{ios_dir}'):")
+      Dir.entries(ios_dir).each { |entry| UI.message("  - #{entry}") }
+      UI.message("🔍 Manual check with File.exist?:")
+      UI.message("  - ios/TaktikTräning.xcodeproj exists? #{File.exist?('ios/TaktikTräning.xcodeproj')}")
       UI.user_error!("❌ No .xcodeproj files found in #{ios_dir}/ directory!")
     end
     
