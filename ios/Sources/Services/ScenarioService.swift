@@ -6,7 +6,9 @@ final class ScenarioService {
     private var library: ScenarioLibrary
     
     private init() {
+        // Initialize with empty library first
         library = ScenarioLibrary(scenarios: [], collections: [])
+        // Then load actual data
         library = loadBundledScenarios()
     }
     

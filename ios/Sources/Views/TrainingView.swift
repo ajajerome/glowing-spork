@@ -117,7 +117,7 @@ struct TrainingView: View, TrainingSceneDelegate {
         var session = scene.telemetrySnapshot()
         session.score = score
         session.ageBand = avatarStore.avatar?.derivedAgeBand() ?? avatarStore.avatar?.ageBand
-        ProgressStore.shared.add(session)
+        GameProgressStore.shared.addSession(session)
         lastSession = session
         showSummary = true
 

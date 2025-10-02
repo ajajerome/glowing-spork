@@ -389,6 +389,12 @@ final class GameProgressStore: ObservableObject {
         loadBadges()
     }
     
+    func addSession(_ session: DrillSessionTelemetry) {
+        // Add XP based on session performance
+        let xpAmount = max(10, session.score / 10)
+        addXP(xpAmount, session: session)
+    }
+    
     func addXP(_ amount: Int, for skills: [TacticalSkill] = [], session: DrillSessionTelemetry? = nil) {
         progress.addXP(amount, for: skills)
         

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RecommendationsView: View {
     @ObservedObject private var avatarStore = AvatarStore.shared
-    @ObservedObject private var progressStore = ProgressStore.shared
+    @ObservedObject private var progressStore = GameProgressStore.shared
     @State private var recommendations: [DrillRecommendation] = []
     @State private var isLoading = true
     
