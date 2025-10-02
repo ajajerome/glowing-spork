@@ -140,6 +140,10 @@ jobs:
         </plist>
         EOF
         
+        # Add Apple ID to keychain for export
+        echo "🔐 Adding Apple ID to keychain for export..."
+        security add-generic-password -a "$APPLE_ID" -w "$APP_PASSWORD" -s "deliver.apple.com"
+        
         # Export with correct syntax using exportOptionsPlist
         echo "🔧 Exporting with correct xcodebuild syntax..."
         
