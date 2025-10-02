@@ -83,7 +83,7 @@ struct RecommendationsView: View {
             
             let newRecommendations = AIRecommendationEngine.shared.recommendDrills(
                 for: avatar,
-                progressHistory: progressStore.sessions
+                progressHistory: ProgressStore.shared.sessions
             )
             
             DispatchQueue.main.async {

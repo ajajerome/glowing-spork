@@ -159,7 +159,7 @@ struct ScenarioGameView: View {
     private func setupScene() {
         scene.size = CGSize(width: 400, height: 600)
         scene.scaleMode = .aspectFit
-        scene.tacticalDelegate = self
+        scene.tacticalDelegate = delegate
     }
     
     private func loadScenarios() {
@@ -178,7 +178,7 @@ struct ScenarioGameView: View {
     
     private func startScenario(_ scenario: GameScenario) {
         currentScenario = scenario
-        scene.presentScenario(scenario)
+        scene.loadScenario(scenario)
     }
     
     private func generateRandomScenario() {
