@@ -23,9 +23,17 @@ platform :ios do
       in_house: false
     )
 
-    # Use local paths since we're running from ios/ directory
-    project_path = "TaktikTräning.xcodeproj"
-    scheme_name = "TaktikTräning"
+    # Find the actual project file dynamically
+    project_files = Dir.glob("*.xcodeproj")
+    if project_files.empty?
+      UI.user_error!("❌ No .xcodeproj files found in current directory!")
+    end
+    
+    project_path = project_files.first
+    scheme_name = File.basename(project_path, ".xcodeproj")
+    
+    UI.message("🔍 Found project: #{project_path}")
+    UI.message("🎯 Using scheme: #{scheme_name}")
 
     UI.message("🧪 Building TaktikTräning for TestFlight...")
     UI.message("📁 Current directory: #{Dir.pwd}")
