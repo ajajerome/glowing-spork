@@ -5,7 +5,7 @@ options:
     iOS: "16.0"
 settings:
   base:
-    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.learnfotball
+    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.fotbollsresan
     DEVELOPMENT_TEAM: MW98Z2Q68W
     SWIFT_VERSION: 5.0
     TARGETED_DEVICE_FAMILY: 1

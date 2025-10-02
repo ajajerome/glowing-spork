@@ -91,7 +91,7 @@ jobs:
           -authenticationKeyID "${ASC_KEY_ID}" \
           -authenticationKeyIssuerID "${ASC_ISSUER_ID}" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
-          PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.learnfotball" \
+          PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.fotbollsresan" \
           archive
           
     - name: 📦 Export for App Store
