@@ -230,7 +230,7 @@ struct InsightsView: View {
                     .italic()
             } else {
                 ForEach(recommendations) { recommendation in
-                    RecommendationCard(recommendation: recommendation)
+                    InsightsRecommendationCard(recommendation: recommendation)
                 }
             }
         }
@@ -451,7 +451,7 @@ struct MonthlyGoalCard: View {
     }
 }
 
-struct RecommendationCard: View {
+struct InsightsRecommendationCard: View {
     let recommendation: PersonalizedRecommendation
     @State private var isExpanded = false
     

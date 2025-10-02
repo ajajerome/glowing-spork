@@ -1,7 +1,7 @@
 import SpriteKit
 import SwiftUI
 
-protocol TacticalPitchDelegate: AnyObject {
+protocol TacticalPitchDelegate {
     func decisionSelected(_ decision: DecisionOption, in scenario: GameScenario)
     func scenarioCompleted(_ scenario: GameScenario, outcome: DecisionOutcome)
 }

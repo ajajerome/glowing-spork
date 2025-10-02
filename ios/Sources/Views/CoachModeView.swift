@@ -684,7 +684,7 @@ struct CoachRecommendationCard: View {
     }
 }
 
-struct SkillProgressRow: View {
+struct CoachSkillProgressRow: View {
     let skill: TacticalSkill
     let level: Int
     let progress: Double

@@ -1,7 +1,7 @@
 import SpriteKit
 import Foundation
 
-final class TrainingScene: SKScene, SKPhysicsContactDelegate {
+class TrainingScene: SKScene, SKPhysicsContactDelegate {
     // Physics categories
     private struct Category {
         static let none: UInt32 = 0

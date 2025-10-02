@@ -1,7 +1,7 @@
 import SwiftUI
 import SpriteKit
 
-protocol TrainingSceneDelegate: AnyObject {
+protocol TrainingSceneDelegate {
     func trainingDidEnd(score: Int)
 }
 
