@@ -55,7 +55,7 @@ final class ScenarioGenerator {
         }
     }
     
-    private func generateAttackScenario(ageBand: AgeBand) -> GameScenario {
+    func generateAttackScenario(ageBand: AgeBand) -> GameScenario {
         let situation = MatchSituation(
             context: .attack,
             ballPosition: Position(x: 35, y: 60),
@@ -134,7 +134,7 @@ final class ScenarioGenerator {
         )
     }
     
-    private func generateDefenceScenario(ageBand: AgeBand) -> GameScenario {
+    func generateDefenceScenario(ageBand: AgeBand) -> GameScenario {
         let situation = MatchSituation(
             context: .defence,
             ballPosition: Position(x: 65, y: 30),
@@ -213,7 +213,7 @@ final class ScenarioGenerator {
         )
     }
     
-    private func generateTransitionScenario(ageBand: AgeBand) -> GameScenario {
+    func generateTransitionScenario(ageBand: AgeBand) -> GameScenario {
         let situation = MatchSituation(
             context: .transition,
             ballPosition: Position(x: 45, y: 45),
@@ -277,7 +277,7 @@ final class ScenarioGenerator {
         )
     }
     
-    private func generateBuildUpScenario(ageBand: AgeBand) -> GameScenario {
+    func generateBuildUpScenario(ageBand: AgeBand) -> GameScenario {
         let situation = MatchSituation(
             context: .buildUp,
             ballPosition: Position(x: 20, y: 50),
