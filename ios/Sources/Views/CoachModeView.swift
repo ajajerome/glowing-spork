@@ -175,4 +175,4 @@ struct CoachAnalysisView: View {
 
 // MARK: - Extensions
 
-// TacticalSkill.displayName extension finns redan i ProgressTracker.swift
+// Extensions finns redan - använder befintliga från ProgressTracker.swift

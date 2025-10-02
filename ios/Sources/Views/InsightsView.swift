@@ -181,4 +181,4 @@ enum TimeFrame: String, CaseIterable, Identifiable {
     }
 }
 
-// TacticalSkill.displayName extension finns redan i ProgressTracker.swift
+// Extensions finns redan - använder befintliga från ProgressTracker.swift

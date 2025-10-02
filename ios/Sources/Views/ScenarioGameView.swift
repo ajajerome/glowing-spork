@@ -1,13 +1,22 @@
 import SwiftUI
 import SpriteKit
 
+// MARK: - Delegate Class (Foundation-first: protocols need classes)
+class ScenarioGameDelegate: TacticalPitchDelegate {
+    weak var gameView: ScenarioGameView?
+    
+    func decisionSelected(_ decision: DecisionOption, in scenario: GameScenario) {
+        gameView?.handleDecision(decision, in: scenario)
+    }
+}
+
 struct ScenarioGameView: View {
     @ObservedObject private var avatarStore = AvatarStore.shared
     @ObservedObject private var progressStore = GameProgressStore.shared
     @State private var currentScenario: GameScenario?
     @State private var scene = TacticalPitchScene()
     @State private var showingScenarioSelector = false
-    @State private var delegate: ScenarioGameDelegate?
+    @State private var delegate = ScenarioGameDelegate()
     @State private var gameScore = 0
     @State private var xpEarned = 0
     @State private var skillsImproved: [TacticalSkill] = []
@@ -46,6 +55,9 @@ struct ScenarioGameView: View {
         .onAppear {
             setupScene()
             loadScenarios()
+            // Foundation-first: Setup delegate connection
+            delegate.gameView = self
+            scene.tacticalDelegate = delegate
         }
         .sheet(isPresented: $showingScenarioSelector) {
             ScenarioSelectorView(
@@ -173,9 +185,9 @@ struct ScenarioGameView: View {
         startScenario(randomScenario)
     }
     
-    // MARK: - TacticalPitchDelegate
+    // MARK: - Decision Handling
     
-    func decisionSelected(_ decision: DecisionOption, in scenario: GameScenario) {
+    func handleDecision(_ decision: DecisionOption, in scenario: GameScenario) {
         // Process decision
         let xpGained = Int(Double(decision.xpReward) * decision.outcome.success.xpMultiplier)
         xpEarned += xpGained
