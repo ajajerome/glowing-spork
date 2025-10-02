@@ -95,7 +95,7 @@ jobs:
           rm "${API_KEY_PATH}.tmp"
         fi
         
-        # Now try device build with API key authentication
+        # Try device build with Apple ID authentication (simpler approach)
         xcodebuild \
           -project TaktikTräning.xcodeproj \
           -scheme TaktikTräning \
@@ -103,9 +103,6 @@ jobs:
           -archivePath ./build/TaktikTräning.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
-          -authenticationKeyPath "$API_KEY_PATH" \
-          -authenticationKeyID "$ASC_KEY_ID" \
-          -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
           PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
           archive
