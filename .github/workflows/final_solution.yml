@@ -1,0 +1,130 @@
+name: Final Solution - TaktikTraning TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      apple_id:
+        description: 'Apple ID email'
+        required: true
+        type: string
+      app_password:
+        description: 'App-specific password'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+        
+    - name: Install tools
+      run: |
+        brew install xcodegen
+        brew install expect
+        
+    - name: Generate project
+      run: |
+        cd ios
+        xcodegen generate
+        ls -la TaktikTräning.xcodeproj/
+        
+    - name: Set build number
+      run: |
+        cd ios
+        BUILD_NUM=$(date +"%y%m%d%H%M")
+        /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUM" Info.plist
+        echo "Build number: $BUILD_NUM"
+        
+    - name: Build with auto login
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        cd ios
+        
+        # Create expect script
+        cat > build.exp << 'EOF'
+#!/usr/bin/expect -f
+set timeout 300
+set apple_id [lindex $argv 0]
+set password [lindex $argv 1]
+
+spawn xcodebuild -project TaktikTräning.xcodeproj -scheme TaktikTräning -configuration Release -archivePath ./build/TaktikTräning.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration DEVELOPMENT_TEAM=MW98Z2Q68W PRODUCT_BUNDLE_IDENTIFIER=com.ajagames.taktiktraning archive
+
+expect {
+    "Apple ID:" {
+        send "$apple_id\r"
+        exp_continue
+    }
+    "Password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Enter your password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Continue" {
+        send "\r"
+        exp_continue
+    }
+    "ARCHIVE SUCCEEDED" {
+        puts "SUCCESS: Archive created!"
+        exit 0
+    }
+    "ARCHIVE FAILED" {
+        puts "ERROR: Archive failed"
+        exit 1
+    }
+    eof {
+        exit 0
+    }
+    timeout {
+        puts "TIMEOUT: Build took too long"
+        exit 1
+    }
+}
+EOF
+        
+        chmod +x build.exp
+        ./build.exp "$APPLE_ID" "$APP_PASSWORD"
+        
+    - name: Export IPA
+      run: |
+        cd ios
+        
+        cat > export.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>MW98Z2Q68W</string>
+        </dict>
+        </plist>
+        EOF
+        
+        xcodebuild -exportArchive -archivePath ./build/TaktikTräning.xcarchive -exportPath ./build -exportOptionsPlist ./export.plist -allowProvisioningUpdates
+        
+    - name: Upload to TestFlight
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        cd ios
+        IPA_FILE=$(find ./build -name "*.ipa" | head -1)
+        echo "Uploading: $IPA_FILE"
+        
+        xcrun altool --upload-app --type ios --file "$IPA_FILE" --username "$APPLE_ID" --password "$APP_PASSWORD"
+        
+        echo "SUCCESS: TaktikTräning uploaded to TestFlight!"
