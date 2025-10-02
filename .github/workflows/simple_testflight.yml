@@ -81,10 +81,10 @@ jobs:
         
         # Build and archive with App Store Connect API auth
         xcodebuild \
-          -project Fotbollsresan.xcodeproj \
-          -scheme Fotbollsresan \
+          -project TaktikTräning.xcodeproj \
+          -scheme TaktikTräning \
           -configuration Release \
-          -archivePath ./build/Fotbollsresan.xcarchive \
+          -archivePath ./build/TaktikTräning.xcarchive \
           -allowProvisioningUpdates \
           -allowProvisioningDeviceRegistration \
           -authenticationKeyPath "${API_KEY_PATH}" \
@@ -121,7 +121,7 @@ jobs:
         # Export archive
         xcodebuild \
           -exportArchive \
-          -archivePath ./build/Fotbollsresan.xcarchive \
+          -archivePath ./build/TaktikTräning.xcarchive \
           -exportPath ./build \
           -exportOptionsPlist ./export_options.plist \
           -allowProvisioningUpdates

@@ -1,11 +1,11 @@
-name: Fotbollsresan
+name: TaktikTräning
 options:
   minimumXcodeGenVersion: 2.33.0
   deploymentTarget:
     iOS: "16.0"
 settings:
   base:
-    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.fotbollsresan
+    PRODUCT_BUNDLE_IDENTIFIER: com.ajagames.taktiktraning
     DEVELOPMENT_TEAM: MW98Z2Q68W
     SWIFT_VERSION: 5.0
     TARGETED_DEVICE_FAMILY: 1
@@ -13,7 +13,7 @@ settings:
     CURRENT_PROJECT_VERSION: 1
     MARKETING_VERSION: 0.1.0
 targets:
-  Fotbollsresan:
+  TaktikTräning:
     type: application
     platform: iOS
     sources:
@@ -28,8 +28,8 @@ targets:
     info:
       path: Info.plist
       properties:
-        CFBundleName: Fotbollsresan
-        CFBundleDisplayName: Fotbollsresan
+        CFBundleName: TaktikTräning
+        CFBundleDisplayName: TaktikTräning
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UISupportedInterfaceOrientations~ipad:
