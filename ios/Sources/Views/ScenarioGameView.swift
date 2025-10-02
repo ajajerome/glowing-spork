@@ -3,10 +3,10 @@ import SpriteKit
 
 // MARK: - Delegate Class (Foundation-first: protocols need classes)
 class ScenarioGameDelegate: TacticalPitchDelegate {
-    weak var gameView: ScenarioGameView?
+    var onDecisionSelected: ((DecisionOption, GameScenario) -> Void)?
     
     func decisionSelected(_ decision: DecisionOption, in scenario: GameScenario) {
-        gameView?.handleDecision(decision, in: scenario)
+        onDecisionSelected?(decision, scenario)
     }
 }
 
@@ -55,8 +55,10 @@ struct ScenarioGameView: View {
         .onAppear {
             setupScene()
             loadScenarios()
-            // Foundation-first: Setup delegate connection
-            delegate.gameView = self
+            // Foundation-first: Setup delegate connection with closure
+            delegate.onDecisionSelected = { [self] decision, scenario in
+                handleDecision(decision, in: scenario)
+            }
             scene.tacticalDelegate = delegate
         }
         .sheet(isPresented: $showingScenarioSelector) {
