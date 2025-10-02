@@ -140,7 +140,10 @@ jobs:
           -exportArchive \
           -archivePath ./build/TaktikTräning.xcarchive \
           -exportPath ./build \
-          -exportOptionsPlist ./export.plist
+          -exportOptionsPlist ./export.plist \
+          -authenticationKeyPath "$API_KEY_PATH" \
+          -authenticationKeyID "$ASC_KEY_ID" \
+          -authenticationKeyIssuerID "$ASC_ISSUER_ID"
         
         # Upload
         IPA_FILE=$(find ./build -name "*.ipa" | head -1)
