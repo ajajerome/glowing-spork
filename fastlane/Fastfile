@@ -23,8 +23,8 @@ platform :ios do
       in_house: false
     )
 
-    # Use absolute paths from root directory
-    ios_dir = "ios"
+    # Use correct paths from fastlane directory
+    ios_dir = "../ios"  # Go up one level from fastlane/ to reach ios/
     
     UI.message("🔍 Debugging Dir.glob...")
     UI.message("📁 Current working directory: #{Dir.pwd}")
@@ -39,9 +39,13 @@ platform :ios do
       UI.error("❌ Dir.glob returned empty array!")
       UI.message("🔍 Let's try different approaches:")
       UI.message("📂 Dir.entries('#{ios_dir}'):")
-      Dir.entries(ios_dir).each { |entry| UI.message("  - #{entry}") }
+      begin
+        Dir.entries(ios_dir).each { |entry| UI.message("  - #{entry}") }
+      rescue => e
+        UI.error("Error reading directory: #{e.message}")
+      end
       UI.message("🔍 Manual check with File.exist?:")
-      UI.message("  - ios/TaktikTräning.xcodeproj exists? #{File.exist?('ios/TaktikTräning.xcodeproj')}")
+      UI.message("  - #{ios_dir}/TaktikTräning.xcodeproj exists? #{File.exist?('#{ios_dir}/TaktikTräning.xcodeproj')}")
       UI.user_error!("❌ No .xcodeproj files found in #{ios_dir}/ directory!")
     end
     
