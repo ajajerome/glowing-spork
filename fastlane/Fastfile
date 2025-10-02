@@ -34,13 +34,24 @@ platform :ios do
     UI.message("👥 Team ID: MW98Z2Q68W")
     
     # List current directory contents
+    UI.message("📂 Current directory contents:")
     sh("ls -la")
     
-    # Check if project exists
-    unless File.exist?(project_path)
-      UI.user_error!("❌ Project file #{project_path} does not exist!")
+    # Check for any .xcodeproj files
+    UI.message("🔍 Looking for any .xcodeproj files:")
+    sh("find . -name '*.xcodeproj' -type d")
+    
+    # Check if our specific project exists
+    UI.message("🎯 Checking for specific project: #{project_path}")
+    if File.exist?(project_path)
+      UI.success("✅ Project found at #{project_path}")
+    else
+      UI.error("❌ Project file #{project_path} does not exist!")
+      UI.message("📁 Current working directory: #{Dir.pwd}")
+      UI.message("📂 Directory contents:")
+      Dir.entries(".").each { |entry| UI.message("  - #{entry}") }
+      UI.user_error!("Project file not found - check debug output above")
     end
-    UI.success("✅ Project found at #{project_path}")
 
     # Increment build number
     increment_build_number(xcodeproj: project_path)
