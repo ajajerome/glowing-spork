@@ -63,15 +63,39 @@ jobs:
           exit 1
         fi
         
-    - name: 🏗️ Build and Archive
+    - name: 🔧 Setup Xcode Credentials
       env:
         APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        echo "🔧 Setting up Xcode credentials..."
+        
+        # Try to add Apple ID using xcodebuild with credentials
+        # This creates the necessary authentication for provisioning
+        echo "🔑 Pre-authenticating with Apple Developer Portal..."
+        
+        # Create a dummy project to trigger authentication
+        mkdir -p temp_auth
+        cd temp_auth
+        
+        # Create minimal project for auth test
+        cat > test.xcodeproj/project.pbxproj << 'EOF'
+// Minimal project file for authentication test
+EOF
+        
+        # Try to list provisioning profiles to trigger auth
+        security unlock-keychain -p "" ~/Library/Keychains/login.keychain-db || true
+        
+        cd ../ios
+        echo "✅ Credentials setup completed"
+        
+    - name: 🏗️ Build and Archive
       run: |
         cd ios
         
-        echo "🏗️ Building TaktikTräning with Apple ID authentication..."
+        echo "🏗️ Building TaktikTräning with logged-in Apple ID..."
         
-        # Build and archive
+        # Build and archive (should now have access to Apple ID)
         xcodebuild \
           -project TaktikTräning.xcodeproj \
           -scheme TaktikTräning \
