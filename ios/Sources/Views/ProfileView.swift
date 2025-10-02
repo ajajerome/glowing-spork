@@ -48,11 +48,13 @@ struct ProfileView: View {
             }
         }
         .sheet(isPresented: $showingBadges) {
-            BadgesCollectionView()
+            Text("Badge Collection kommer snart!")
+                .padding()
         }
         .sheet(isPresented: $showingSkillDetails) {
             if let skill = selectedSkill {
-                SkillDetailView(skill: skill)
+                Text("Skill Details för \(skill.rawValue) kommer snart!")
+                    .padding()
             }
         }
         .fullScreenCover(isPresented: $showingCoachMode) {

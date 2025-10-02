@@ -47,9 +47,6 @@ struct InsightsView: View {
         .sheet(isPresented: $showingDetailedAnalysis) {
             DetailedAnalysisView()
         }
-        .sheet(item: $selectedSkill) { skill in
-            SkillDetailView(skill: skill)
-        }
     }
     
     private var timeFrameSelector: some View {
@@ -137,40 +134,29 @@ struct InsightsView: View {
                 .font(.headline)
                 .bold()
             
-            if #available(iOS 16.0, *) {
-                Chart(progressTracker.weeklyProgress.sessions) { session in
-                    LineMark(
-                        x: .value("Datum", session.date),
-                        y: .value("Poäng", session.score)
-                    )
-                    .foregroundStyle(.blue)
-                    .symbol(Circle())
-                    
-                    AreaMark(
-                        x: .value("Datum", session.date),
-                        y: .value("Poäng", session.score)
-                    )
-                    .foregroundStyle(.blue.opacity(0.1))
+            // Simple performance overview
+            VStack(spacing: 8) {
+                HStack {
+                    Text("Senaste sessioner:")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Spacer()
                 }
-                .frame(height: 200)
-                .chartXAxis {
-                    AxisMarks(values: .stride(by: .day)) { _ in
-                        AxisGridLine()
-                        AxisValueLabel(format: .dateTime.weekday(.abbreviated))
+                
+                ForEach(progressTracker.weeklyProgress.sessions.prefix(5), id: \.date) { session in
+                    HStack {
+                        Text(session.date, style: .date)
+                            .font(.caption)
+                        Spacer()
+                        Text("\(Int(session.score)) poäng")
+                            .font(.caption)
+                            .bold()
+                            .foregroundColor(.blue)
                     }
+                    .padding(.vertical, 2)
                 }
-                .chartYAxis {
-                    AxisMarks { _ in
-                        AxisGridLine()
-                        AxisValueLabel()
-                    }
-                }
-            } else {
-                // Fallback for iOS 15
-                Text("Prestationsdiagram kräver iOS 16+")
-                    .foregroundColor(.secondary)
-                    .frame(height: 200)
             }
+            .frame(height: 200)
         }
         .padding()
         .background(Color(.secondarySystemBackground))
