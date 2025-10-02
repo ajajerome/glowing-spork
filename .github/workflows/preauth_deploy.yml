@@ -106,6 +106,9 @@ jobs:
           -authenticationKeyPath "$API_KEY_PATH" \
           -authenticationKeyID "$ASC_KEY_ID" \
           -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+          CODE_SIGN_STYLE="Automatic" \
+          CODE_SIGN_IDENTITY="Apple Distribution" \
+          PROVISIONING_PROFILE_SPECIFIER="TaktikTraning App Store" \
           DEVELOPMENT_TEAM="MW98Z2Q68W" \
           PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
           archive
