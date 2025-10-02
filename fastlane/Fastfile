@@ -81,12 +81,15 @@ platform :ios do
       UI.user_error!("Project file not found - check debug output above")
     end
 
-    # Increment build number
-    increment_build_number(xcodeproj: project_path)
+    # Increment build number with absolute path
+    absolute_project_path = File.expand_path(project_path)
+    UI.message("🔢 Incrementing build number for: #{absolute_project_path}")
+    increment_build_number(xcodeproj: absolute_project_path)
     
     # Build with gym - let automatic signing handle everything
+    UI.message("🏗️ Building with gym using absolute path: #{absolute_project_path}")
     gym(
-      project: project_path,
+      project: absolute_project_path,
       scheme: scheme_name,
       export_method: "app-store",
       configuration: "Release",
