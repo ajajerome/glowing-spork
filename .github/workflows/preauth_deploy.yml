@@ -129,7 +129,7 @@ jobs:
         <plist version="1.0">
         <dict>
           <key>method</key>
-          <string>app-store</string>
+          <string>app-store-connect</string>
           <key>teamID</key>
           <string>MW98Z2Q68W</string>
         </dict>
