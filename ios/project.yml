@@ -19,6 +19,8 @@ targets:
     sources:
       - path: Sources
       - path: Resources
+        excludes:
+          - Info.plist
     settings:
       base:
         INFOPLIST_FILE: Info.plist
