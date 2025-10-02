@@ -316,9 +316,11 @@ struct CoachProgressView: View {
             // Current skill levels
             ForEach(TacticalSkill.allCases, id: \.self) { skill in
                 SkillProgressRow(
-                    skill: skill,
-                    level: progressStore.progress.skillLevel(for: skill),
-                    progress: progressStore.progress.skillProgress(for: skill)
+                    skillData: SkillRadarPoint(
+                        skill: skill,
+                        value: Double(progressStore.progress.skillLevel(for: skill))
+                    ),
+                    onTap: { }
                 )
             }
         }
