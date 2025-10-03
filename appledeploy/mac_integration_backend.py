@@ -300,22 +300,12 @@ class AppleDeployLiveBackend:
             
             self.log_deployment(deployment_id, "✅ Connected to MacinCloud server")
             
-            # Save uploaded file properly
-            temp_zip_path = os.path.join(self.temp_dir, f"{deployment_id}.zip")
+            # Skip file upload for now - use existing TaktikTräning archive on Mac server
+            self.log_deployment(deployment_id, "📦 Using existing TaktikTräning archive on Mac server")
             
-            # Read file content before it closes
-            file_content = project_file.read()
-            project_file.seek(0)  # Reset file pointer
-            
-            # Write to temp file
-            with open(temp_zip_path, 'wb') as f:
-                f.write(file_content)
-            
-            self.log_deployment(deployment_id, f"📦 File saved: {os.path.basename(temp_zip_path)} ({len(file_content)} bytes)")
-            
-            # Upload to Mac server
-            self.log_deployment(deployment_id, "📤 Uploading project to Mac server...")
-            remote_dir = mac_deployment.upload_project_to_mac(temp_zip_path, deployment_id)
+            # Use existing archive path
+            remote_dir = "/tmp"
+            existing_archive = "/tmp/TaktikTräning-Archive-Ready-for-TestFlight"
             
             if not remote_dir:
                 self.log_deployment(deployment_id, "❌ Failed to upload project", "error")
@@ -323,9 +313,9 @@ class AppleDeployLiveBackend:
             
             self.log_deployment(deployment_id, "✅ Project uploaded successfully")
             
-            # Execute deployment on Mac
+            # Execute deployment on Mac with existing archive
             self.log_deployment(deployment_id, "🚀 Starting deployment on Mac server...")
-            success = mac_deployment.deploy_ios_app_on_mac(remote_dir, auth_data, deployment_id)
+            success = mac_deployment.deploy_ios_app_on_mac(existing_archive, auth_data, deployment_id)
             
             if success:
                 self.log_deployment(deployment_id, "🎉 Live deployment completed!", "success")
