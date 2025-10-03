@@ -224,8 +224,19 @@ backend = AppleDeployBackend()
 @app.route('/')
 def index():
     """Serve the AppleDeploy web interface"""
-    with open('index.html', 'r') as f:
-        return f.read()
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        html_path = os.path.join(current_dir, 'index.html')
+        with open(html_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        return """
+        <h1>🍎 AppleDeploy Server Running!</h1>
+        <p>iOS-First CI/CD Platform</p>
+        <p>Foundation-first approach to iOS deployment</p>
+        <p><strong>Status:</strong> Server is running correctly!</p>
+        <p><em>HTML file not found, but server is working.</em></p>
+        """
 
 @app.route('/api/deploy', methods=['POST'])
 def deploy():
