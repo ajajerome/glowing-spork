@@ -176,7 +176,7 @@ jobs:
         fi
         
     - name: Upload Archive for Manual Export
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: TaktikTräning-Archive-Ready-for-TestFlight
         path: ios/build/TaktikTräning.xcarchive
