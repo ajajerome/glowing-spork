@@ -123,7 +123,7 @@ jobs:
       run: |
         cd ios
         
-        # Export with manual signing to match archive
+        # Export with automatic signing - let xcodebuild find profiles
         cat > export.plist << 'EOF'
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -134,14 +134,7 @@ jobs:
           <key>teamID</key>
           <string>MW98Z2Q68W</string>
           <key>signingStyle</key>
-          <string>manual</string>
-          <key>signingCertificate</key>
-          <string>Apple Distribution</string>
-          <key>provisioningProfiles</key>
-          <dict>
-            <key>com.ajagames.taktiktraning</key>
-            <string>TaktikTraning App Store</string>
-          </dict>
+          <string>automatic</string>
         </dict>
         </plist>
         EOF
