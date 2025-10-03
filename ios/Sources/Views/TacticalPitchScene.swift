@@ -1,4 +1,4 @@
-THIS SHOULD BE A LINTER ERRORimport SpriteKit
+import SpriteKit
 import SwiftUI
 
 protocol TacticalPitchDelegate: AnyObject {
