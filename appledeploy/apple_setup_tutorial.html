@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Developer Setup - Super Simple Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .tutorial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            background: #f8f9ff;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .screenshot-placeholder {
+            background: #e9ecef;
+            border: 2px dashed #6c757d;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: #6c757d;
+        }
+        
+        .important-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success-note {
+            background: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .cost-breakdown {
+            background: #e8f5e8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .timeline {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .timeline-item {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍎 Apple Developer Setup</h1>
+            <p>Super Simple Guide - Get ready for AppleDeploy in 15 minutes</p>
+        </div>
+        
+        <div class="tutorial-card">
+            <h2>🎯 What You Need to Deploy iOS Apps</h2>
+            <p>Don't worry - we'll guide you through everything step by step!</p>
+            
+            <div class="cost-breakdown">
+                <h3>💰 Total Cost Breakdown:</h3>
+                <ul style="margin-left: 2rem; margin-top: 1rem;">
+                    <li><strong>Apple Developer Program:</strong> $99/year (required)</li>
+                    <li><strong>AppleDeploy:</strong> $29/month (optional - free tier available)</li>
+                    <li><strong>Total first month:</strong> ~$128 to get started</li>
+                </ul>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">⏱️ 15 min setup</div>
+                <div class="timeline-item">🚀 5 min deployments</div>
+                <div class="timeline-item">📱 Instant testing</div>
+            </div>
+        </div>
+        
+        <!-- Step 1: Apple Developer Account -->
+        <div class="tutorial-card">
+            <div class="step">
+                <h3><span class="step-number">1</span> Create Apple Developer Account</h3>
+                
+                <p><strong>What:</strong> This lets you publish apps to App Store and TestFlight</p>
+                <p><strong>Cost:</strong> $99/year (required by Apple)</p>
+                <p><strong>Time:</strong> 5-10 minutes</p>
+                
+                <div class="important-note">
+                    <strong>💡 Important:</strong> You need this to publish ANY iOS app. It's Apple's requirement, not ours.
+                </div>
+                
+                <h4>Steps:</h4>
+                <ol style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Go to <a href="https://developer.apple.com/programs/" target="_blank">developer.apple.com/programs</a></li>
+                    <li>Click "Enroll" → "Start Your Enrollment"</li>
+                    <li>Sign in with your Apple ID (same as App Store)</li>
+                    <li>Choose "Individual" (unless you're a company)</li>
+                    <li>Pay $99/year</li>
+                    <li>Wait for approval (usually instant, sometimes 24-48 hours)</li>
+                </ol>
+                
+                <div class="success-note">
+                    <strong>✅ You'll know it worked when:</strong> You can access developer.apple.com and see "Certificates, Identifiers & Profiles"
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: App Store Connect -->
+        <div class="tutorial-card">
+            <div class="step">
+                <h3><span class="step-number">2</span> Create Your App in App Store Connect</h3>
+                
+                <p><strong>What:</strong> Register your app so Apple knows it exists</p>
+                <p><strong>Cost:</strong> Free</p>
+                <p><strong>Time:</strong> 3-5 minutes</p>
+                
+                <h4>Steps:</h4>
+                <ol style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Go to <a href="https://appstoreconnect.apple.com" target="_blank">appstoreconnect.apple.com</a></li>
+                    <li>Click "My Apps" → "+" → "New App"</li>
+                    <li>Fill in:
+                        <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                            <li><strong>Name:</strong> Your app name (e.g., "TaktikTräning")</li>
+                            <li><strong>Bundle ID:</strong> com.yourname.yourapp</li>
+                            <li><strong>SKU:</strong> Any unique text (e.g., "myapp2025")</li>
+                            <li><strong>Language:</strong> Your primary language</li>
+                        </ul>
+                    </li>
+                    <li>Click "Create"</li>
+                </ol>
+                
+                <div class="important-note">
+                    <strong>💡 Bundle ID Tip:</strong> Use format com.yourname.appname (e.g., com.john.taktiktraning). This CANNOT be changed later!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3: App-Specific Password -->
+        <div class="tutorial-card">
+            <div class="step">
+                <h3><span class="step-number">3</span> Create App-Specific Password</h3>
+                
+                <p><strong>What:</strong> Special password for AppleDeploy to access your account</p>
+                <p><strong>Cost:</strong> Free</p>
+                <p><strong>Time:</strong> 2 minutes</p>
+                
+                <h4>Steps:</h4>
+                <ol style="margin-left: 2rem; margin-top: 1rem;">
+                    <li>Go to <a href="https://appleid.apple.com" target="_blank">appleid.apple.com</a></li>
+                    <li>Sign in with your Apple ID</li>
+                    <li>Go to "Security" section</li>
+                    <li>Under "App-Specific Passwords" click "Generate Password"</li>
+                    <li>Name it "AppleDeploy" or "iOS Deployment"</li>
+                    <li>Copy the xxxx-xxxx-xxxx-xxxx password</li>
+                    <li>Save it somewhere safe!</li>
+                </ol>
+                
+                <div class="success-note">
+                    <strong>✅ You'll get:</strong> A password like "abcd-efgh-ijkl-mnop" - this is what AppleDeploy uses
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 4: Ready for AppleDeploy -->
+        <div class="tutorial-card">
+            <div class="step">
+                <h3><span class="step-number">4</span> You're Ready for AppleDeploy!</h3>
+                
+                <p><strong>What:</strong> Now you can deploy any iOS app in 5 minutes</p>
+                <p><strong>Cost:</strong> Free tier available</p>
+                <p><strong>Time:</strong> 5 minutes per deployment</p>
+                
+                <div class="success-note">
+                    <h4>🎉 You now have everything needed:</h4>
+                    <ul style="margin-left: 2rem; margin-top: 1rem;">
+                        <li>✅ Apple Developer Account ($99/year)</li>
+                        <li>✅ App registered in App Store Connect</li>
+                        <li>✅ App-specific password for automation</li>
+                        <li>✅ Ready to use AppleDeploy!</li>
+                    </ul>
+                </div>
+                
+                <h4>Your AppleDeploy Workflow:</h4>
+                <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                    <ol style="margin-left: 1.5rem;">
+                        <li><strong>Build app with AI</strong> (Cursor, Claude, etc.)</li>
+                        <li><strong>Export as ZIP</strong> from GitHub</li>
+                        <li><strong>Upload to AppleDeploy</strong> (drag & drop)</li>
+                        <li><strong>Enter Apple ID</strong> (one time setup)</li>
+                        <li><strong>Click Deploy</strong> → TestFlight in 5 minutes!</li>
+                        <li><strong>Test on iPhone</strong> → Iterate → Repeat</li>
+                    </ol>
+                </div>
+                
+                <a href="super_simple.html" class="btn" style="width: 100%; text-align: center; margin-top: 2rem;">
+                    🚀 Start Using AppleDeploy Now!
+                </a>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="tutorial-card">
+            <h2>❓ Common Questions</h2>
+            
+            <div style="margin-top: 2rem;">
+                <h4>Q: Do I need a Mac?</h4>
+                <p><strong>A:</strong> No! That's the whole point of AppleDeploy. We handle Mac servers for you.</p>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>Q: What if I built my app with AI (Claude, ChatGPT)?</h4>
+                <p><strong>A:</strong> Perfect! AppleDeploy is designed for AI-generated apps. Just export as ZIP and upload.</p>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>Q: How long does deployment take?</h4>
+                <p><strong>A:</strong> 5-10 minutes from ZIP upload to TestFlight. Then 5-10 more minutes for Apple to process.</p>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>Q: What if something goes wrong?</h4>
+                <p><strong>A:</strong> AppleDeploy handles all the common errors automatically. If there's an issue, we show you exactly how to fix it.</p>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>Q: Can I test on my iPhone immediately?</h4>
+                <p><strong>A:</strong> Yes! Once in TestFlight, install the TestFlight app and you can test your app instantly.</p>
+            </div>
+        </div>
+        
+        <!-- Pricing -->
+        <div class="tutorial-card">
+            <h2>💰 AppleDeploy Pricing</h2>
+            <p>Simple, transparent pricing for everyone</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div style="border: 2px solid #e1e5e9; border-radius: 15px; padding: 1.5rem; text-align: center;">
+                    <h3>🆓 Free</h3>
+                    <p style="font-size: 2rem; font-weight: bold; color: #667eea;">$0</p>
+                    <p>Perfect for testing</p>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>1 app</li>
+                        <li>5 deployments/month</li>
+                        <li>Community support</li>
+                    </ul>
+                </div>
+                
+                <div style="border: 3px solid #667eea; border-radius: 15px; padding: 1.5rem; text-align: center; position: relative;">
+                    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #667eea; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem;">POPULAR</div>
+                    <h3>🚀 Pro</h3>
+                    <p style="font-size: 2rem; font-weight: bold; color: #667eea;">$29</p>
+                    <p>For serious development</p>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>Unlimited apps</li>
+                        <li>Unlimited deployments</li>
+                        <li>Priority support</li>
+                        <li>Advanced features</li>
+                    </ul>
+                </div>
+                
+                <div style="border: 2px solid #e1e5e9; border-radius: 15px; padding: 1.5rem; text-align: center;">
+                    <h3>🏢 Team</h3>
+                    <p style="font-size: 2rem; font-weight: bold; color: #667eea;">$99</p>
+                    <p>For teams & agencies</p>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>Everything in Pro</li>
+                        <li>Team collaboration</li>
+                        <li>Multiple Apple IDs</li>
+                        <li>Analytics & reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Stories -->
+        <div class="tutorial-card">
+            <h2>🎉 Success Stories</h2>
+            
+            <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                <h4>"From Claude to iPhone in 10 minutes!"</h4>
+                <p><em>"I used Claude to build a fitness app. AppleDeploy got it on my iPhone the same day. No Xcode, no Mac, no headaches!"</em></p>
+                <p><strong>- Sarah, Designer</strong></p>
+            </div>
+            
+            <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                <h4>"Perfect for AI-generated apps"</h4>
+                <p><em>"I build apps with ChatGPT and Cursor. AppleDeploy is exactly what I needed - no technical iOS knowledge required."</em></p>
+                <p><strong>- Mike, Entrepreneur</strong></p>
+            </div>
+            
+            <div style="background: #f8f9ff; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                <h4>"Saves us thousands on Mac hardware"</h4>
+                <p><em>"Our team was going to buy Macs just for iOS deployment. AppleDeploy solved it for $29/month instead of $3000 hardware."</em></p>
+                <p><strong>- Alex, CTO</strong></p>
+            </div>
+        </div>
+        
+        <!-- Ready to Start -->
+        <div class="tutorial-card" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2>🚀 Ready to Deploy Your First iOS App?</h2>
+            <p style="margin: 1rem 0; font-size: 1.1rem;">You have everything you need. Let's make it happen!</p>
+            
+            <a href="super_simple.html" class="btn" style="background: rgba(255,255,255,0.2); margin-top: 2rem;">
+                🍎 Start Deploying with AppleDeploy
+            </a>
+        </div>
+    </div>
+</body>
+</html>
