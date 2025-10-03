@@ -144,30 +144,36 @@ jobs:
         </plist>
         EOF
         
-        # Interactive export approach - let user handle authentication
-        echo "🎉 ARCHIVE SUCCEEDED! Ready for export..."
-        echo ""
-        echo "📋 EXPORT REQUIRES INTERACTIVE LOGIN:"
-        echo "The export step needs Apple ID authentication that GitHub Actions cannot automate."
-        echo ""
-        echo "✅ WHAT WE ACCOMPLISHED:"
-        echo "- BUILD SUCCEEDED ✅"
-        echo "- ARCHIVE SUCCEEDED ✅"
-        echo "- TaktikTräning.xcarchive created ✅"
-        echo ""
-        echo "📱 TO COMPLETE TESTFLIGHT UPLOAD:"
-        echo "1. Download the archive artifact from this workflow"
-        echo "2. Open Xcode on a Mac"
-        echo "3. Window → Organizer → Archives"
-        echo "4. Drag TaktikTräning.xcarchive to Organizer"
-        echo "5. Click 'Distribute App' → 'App Store Connect'"
-        echo "6. Login with your Apple ID when prompted"
-        echo "7. Follow the upload wizard to TestFlight"
-        echo ""
-        echo "🚀 FOUNDATION-FIRST SUCCESS:"
-        echo "- We solved the core problem: iOS build from Linux ✅"
-        echo "- Archive automation works perfectly ✅"
-        echo "- Only manual export step remains (Apple limitation)"
+        # Try automated export with our custom tool
+        echo "🚀 Attempting automated export with custom tool..."
+        
+        # Make export tool executable
+        chmod +x ../export_automation_tool.py
+        
+        # Try automated export
+        python3 ../export_automation_tool.py \
+          --archive "./build/TaktikTräning.xcarchive" \
+          --apple-id "$APPLE_ID" \
+          --app-password "$APP_PASSWORD" \
+          --team-id "MW98Z2Q68W" \
+          --bundle-id "com.ajagames.taktiktraning" \
+          --profile-name "TaktikTraning App Store" \
+          --api-key-path "$API_KEY_PATH" \
+          --api-key-id "$ASC_KEY_ID" \
+          --api-issuer-id "$ASC_ISSUER_ID" \
+          --upload
+          
+        if [ $? -eq 0 ]; then
+          echo "🎉 FULL AUTOMATION SUCCESS!"
+          echo "📱 TaktikTräning uploaded to TestFlight!"
+        else
+          echo "⚠️ Automated export failed - providing manual instructions..."
+          echo ""
+          echo "📋 MANUAL EXPORT INSTRUCTIONS:"
+          echo "1. Download TaktikTräning-Archive-Ready-for-TestFlight artifact"
+          echo "2. Use Xcode Organizer for manual export"
+          echo "3. Or run export_automation_tool.py locally on Mac"
+        fi
         
     - name: Upload Archive for Manual Export
       uses: actions/upload-artifact@v3
