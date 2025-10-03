@@ -300,9 +300,18 @@ class AppleDeployLiveBackend:
             
             self.log_deployment(deployment_id, "✅ Connected to MacinCloud server")
             
-            # Save uploaded file
+            # Save uploaded file properly
             temp_zip_path = os.path.join(self.temp_dir, f"{deployment_id}.zip")
-            project_file.save(temp_zip_path)
+            
+            # Read file content before it closes
+            file_content = project_file.read()
+            project_file.seek(0)  # Reset file pointer
+            
+            # Write to temp file
+            with open(temp_zip_path, 'wb') as f:
+                f.write(file_content)
+            
+            self.log_deployment(deployment_id, f"📦 File saved: {os.path.basename(temp_zip_path)} ({len(file_content)} bytes)")
             
             # Upload to Mac server
             self.log_deployment(deployment_id, "📤 Uploading project to Mac server...")
