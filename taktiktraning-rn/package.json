@@ -1,0 +1,51 @@
+{
+  "name": "taktiktraning",
+  "version": "1.0.0",
+  "description": "Duolingo för Fotboll - AI-driven tactical training for children 7-16",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build:ios": "eas build --platform ios",
+    "build:android": "eas build --platform android",
+    "submit:ios": "eas submit --platform ios",
+    "submit:android": "eas submit --platform android"
+  },
+  "dependencies": {
+    "expo": "~51.0.0",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-svg": "15.2.0",
+    "react-native-gesture-handler": "~2.16.1",
+    "react-native-reanimated": "~3.10.1",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/stack": "^6.3.17",
+    "react-native-async-storage": "1.23.1",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-haptics": "~13.0.1",
+    "expo-av": "~14.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "keywords": [
+    "football",
+    "soccer", 
+    "education",
+    "children",
+    "tactics",
+    "duolingo",
+    "micro-learning",
+    "AI",
+    "SVFF",
+    "UEFA"
+  ],
+  "author": "TaktikTräning Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajajerome/glowing-spork.git"
+  }
+}
