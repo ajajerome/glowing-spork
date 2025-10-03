@@ -327,6 +327,9 @@ class AppleDeployLiveBackend:
             
         except Exception as e:
             self.log_deployment(deployment_id, f"❌ Live deployment error: {str(e)}", "error")
+            self.log_deployment(deployment_id, f"🔍 Error details: {type(e).__name__}", "error")
+            import traceback
+            self.log_deployment(deployment_id, f"📋 Traceback: {traceback.format_exc()}", "error")
             return False
         finally:
             mac_deployment.disconnect()
