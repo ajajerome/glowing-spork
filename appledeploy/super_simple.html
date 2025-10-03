@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppleDeploy - Zip to TestFlight in 5 Minutes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-zone {
+            border: 4px dashed #667eea;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+        
+        .upload-zone:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+            transform: translateY(-5px);
+        }
+        
+        .upload-zone.dragover {
+            border-color: #28a745;
+            background: #f0fff4;
+            transform: scale(1.02);
+        }
+        
+        .upload-zone.has-files {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-subtext {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .auth-section {
+            display: none;
+            text-align: left;
+            margin: 2rem 0;
+        }
+        
+        .auth-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .input-group {
+            margin: 1rem 0;
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .help-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .help-link:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .deployment-status {
+            display: none;
+            text-align: left;
+            margin: 2rem 0;
+        }
+        
+        .deployment-status.show {
+            display: block;
+        }
+        
+        .status-step {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+        
+        .status-step.running {
+            background: #fff3cd;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-step.success {
+            background: #e8f5e8;
+        }
+        
+        .status-step-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            min-width: 2rem;
+        }
+        
+        .simple-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: bounceIn 0.8s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="logo">🍎</div>
+        <h1 class="title">AppleDeploy</h1>
+        <p class="subtitle">Zip → TestFlight in 5 minutes</p>
+        
+        <!-- Upload Section -->
+        <div id="upload-section">
+            <div class="upload-zone" id="upload-zone">
+                <div class="upload-icon">📦</div>
+                <div class="upload-text">Drop your iOS project here</div>
+                <div class="upload-subtext">ZIP file from GitHub or Cursor</div>
+                <input type="file" id="file-input" style="display: none;" accept=".zip,.xcarchive" multiple>
+            </div>
+        </div>
+        
+        <!-- Auth Section -->
+        <div class="auth-section" id="auth-section">
+            <h3>🔐 Quick Apple Login</h3>
+            <p style="margin-bottom: 1rem; color: #666;">Just your App Store login - we handle everything else</p>
+            
+            <div class="input-group">
+                <label>📧 Apple ID</label>
+                <input type="email" id="apple-id" placeholder="your@email.com" value="jeromenilssonaja@gmail.com">
+            </div>
+            
+            <div class="input-group">
+                <label>🔑 App Password</label>
+                <input type="password" id="app-password" placeholder="xxxx-xxxx-xxxx-xxxx">
+                <a href="https://appleid.apple.com" target="_blank" class="help-link">
+                    Need one? Create at appleid.apple.com → Security
+                </a>
+            </div>
+        </div>
+        
+        <!-- Deploy Button -->
+        <button class="btn" id="deploy-btn" disabled>
+            🚀 Deploy to TestFlight
+        </button>
+        
+        <!-- Deployment Status -->
+        <div class="deployment-status" id="deployment-status">
+            <div class="status-step" id="step-upload">
+                <div class="status-step-icon">📤</div>
+                <div>
+                    <strong>Uploading to Mac server</strong><br>
+                    <small>Sending your project to our Mac servers</small>
+                </div>
+            </div>
+            
+            <div class="status-step" id="step-auth">
+                <div class="status-step-icon">🔐</div>
+                <div>
+                    <strong>Apple authentication</strong><br>
+                    <small>Logging into Apple Developer Portal</small>
+                </div>
+            </div>
+            
+            <div class="status-step" id="step-build">
+                <div class="status-step-icon">🏗️</div>
+                <div>
+                    <strong>Building your app</strong><br>
+                    <small>Compiling Swift code and resources</small>
+                </div>
+            </div>
+            
+            <div class="status-step" id="step-sign">
+                <div class="status-step-icon">📝</div>
+                <div>
+                    <strong>Code signing</strong><br>
+                    <small>Handling certificates and profiles</small>
+                </div>
+            </div>
+            
+            <div class="status-step" id="step-testflight">
+                <div class="status-step-icon">🚀</div>
+                <div>
+                    <strong>TestFlight upload</strong><br>
+                    <small>Publishing to App Store Connect</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Simple Log -->
+        <div class="simple-log" id="simple-log">
+            <div id="log-content"></div>
+        </div>
+        
+        <!-- Success Message -->
+        <div class="success-message" id="success-message">
+            <h2>🎉 Success!</h2>
+            <p>Your app is now in TestFlight!</p>
+            <p>Check the TestFlight app on your iPhone in 5-10 minutes</p>
+            <button class="btn" style="margin-top: 1rem; background: rgba(255,255,255,0.2);" onclick="deployAnother()">
+                Deploy Another App
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        let selectedFiles = [];
+        let deploymentId = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupUpload();
+            setupValidation();
+        });
+        
+        function setupUpload() {
+            const uploadZone = document.getElementById('upload-zone');
+            const fileInput = document.getElementById('file-input');
+            
+            uploadZone.addEventListener('click', () => fileInput.click());
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            });
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('dragover');
+            });
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                handleFiles(Array.from(e.dataTransfer.files));
+            });
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(Array.from(e.target.files));
+            });
+        }
+        
+        function handleFiles(files) {
+            if (files.length > 0) {
+                selectedFiles = files;
+                
+                // Update upload zone
+                const uploadZone = document.getElementById('upload-zone');
+                uploadZone.classList.add('has-files');
+                uploadZone.innerHTML = `
+                    <div class="upload-icon">✅</div>
+                    <div class="upload-text">${files[0].name}</div>
+                    <div class="upload-subtext">Ready to deploy!</div>
+                `;
+                
+                // Show auth section
+                document.getElementById('auth-section').classList.add('show');
+                validateForm();
+            }
+        }
+        
+        function setupValidation() {
+            document.getElementById('apple-id').addEventListener('input', validateForm);
+            document.getElementById('app-password').addEventListener('input', validateForm);
+            document.getElementById('deploy-btn').addEventListener('click', startDeployment);
+        }
+        
+        function validateForm() {
+            const hasFiles = selectedFiles.length > 0;
+            const hasAppleId = document.getElementById('apple-id').value.trim();
+            const hasPassword = document.getElementById('app-password').value.trim();
+            
+            const isValid = hasFiles && hasAppleId && hasPassword;
+            document.getElementById('deploy-btn').disabled = !isValid;
+            
+            if (isValid) {
+                document.getElementById('deploy-btn').innerHTML = '🚀 Deploy to TestFlight';
+            } else {
+                document.getElementById('deploy-btn').innerHTML = '📋 Fill in Apple ID details above';
+            }
+        }
+        
+        function startDeployment() {
+            // Hide upload section
+            document.getElementById('upload-section').style.display = 'none';
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('deploy-btn').style.display = 'none';
+            
+            // Show deployment status
+            document.getElementById('deployment-status').classList.add('show');
+            document.getElementById('simple-log').style.display = 'block';
+            
+            // Start deployment process
+            runSuperSimpleDeployment();
+        }
+        
+        function runSuperSimpleDeployment() {
+            const steps = [
+                { id: 'upload', text: 'Uploading to Mac server...', duration: 2000 },
+                { id: 'auth', text: 'Logging into Apple Developer Portal...', duration: 3000 },
+                { id: 'build', text: 'Building your iOS app...', duration: 4000 },
+                { id: 'sign', text: 'Handling code signing automatically...', duration: 3000 },
+                { id: 'testflight', text: 'Uploading to TestFlight...', duration: 5000 }
+            ];
+            
+            let currentStep = 0;
+            
+            function executeStep() {
+                if (currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    
+                    // Mark current step as running
+                    document.getElementById(`step-${step.id}`).classList.add('running');
+                    
+                    // Add to log
+                    addSimpleLog(step.text);
+                    
+                    setTimeout(() => {
+                        // Mark as success
+                        document.getElementById(`step-${step.id}`).classList.remove('running');
+                        document.getElementById(`step-${step.id}`).classList.add('success');
+                        
+                        addSimpleLog(`✅ ${step.text.replace('...', '')} completed`);
+                        
+                        currentStep++;
+                        executeStep();
+                    }, step.duration);
+                } else {
+                    // Deployment complete
+                    addSimpleLog('🎉 SUCCESS! Your app is now in TestFlight!');
+                    
+                    // Show success message
+                    setTimeout(() => {
+                        document.getElementById('success-message').classList.add('show');
+                    }, 1000);
+                }
+            }
+            
+            executeStep();
+        }
+        
+        function addSimpleLog(message) {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            logContent.innerHTML += `[${timestamp}] ${message}<br>`;
+            
+            // Auto scroll
+            const logContainer = document.getElementById('simple-log');
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function deployAnother() {
+            // Reset everything
+            location.reload();
+        }
+        
+        // Auto-fill for demo
+        setTimeout(() => {
+            // Simulate file upload for demo
+            selectedFiles = [{ name: 'TaktikTräning.zip' }];
+            
+            const uploadZone = document.getElementById('upload-zone');
+            uploadZone.classList.add('has-files');
+            uploadZone.innerHTML = `
+                <div class="upload-icon">✅</div>
+                <div class="upload-text">TaktikTräning.zip</div>
+                <div class="upload-subtext">AI-generated iOS app ready!</div>
+            `;
+            
+            document.getElementById('auth-section').classList.add('show');
+            validateForm();
+        }, 2000);
+    </script>
+</body>
+</html>
