@@ -1,0 +1,177 @@
+name: Interactive TestFlight Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      apple_id:
+        description: 'Apple ID'
+        required: true
+        default: 'jeromenilssonaja@gmail.com'
+      app_password:
+        description: 'App-Specific Password'
+        required: true
+
+jobs:
+  interactive-deploy:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    
+    - name: Install XcodeGen
+      run: brew install xcodegen
+    
+    - name: Generate Xcode Project
+      run: |
+        cd ios
+        xcodegen generate
+        echo "✅ TaktikTräning.xcodeproj generated"
+    
+    - name: Pre-authenticate with Apple
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+      run: |
+        echo "🍎 Pre-authenticating with Apple Developer Portal..."
+        
+        # Test credentials
+        xcrun altool --list-apps --type ios --username "$APPLE_ID" --password "$APP_PASSWORD"
+        
+        if [ $? -eq 0 ]; then
+          echo "✅ Apple ID credentials verified"
+        else
+          echo "❌ Apple ID authentication failed"
+          exit 1
+        fi
+    
+    - name: Build and Archive
+      env:
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+      run: |
+        cd ios
+        
+        # Create API key file
+        API_KEY_PATH="$(pwd)/AuthKey_${ASC_KEY_ID}.p8"
+        echo "$ASC_API_KEY_P8" > "$API_KEY_PATH"
+        
+        echo "🏗️ Building and archiving with established Apple connection..."
+        
+        xcodebuild \
+          -project TaktikTräning.xcodeproj \
+          -scheme TaktikTräning \
+          -configuration Release \
+          -archivePath ./build/TaktikTräning.xcarchive \
+          -allowProvisioningUpdates \
+          -allowProvisioningDeviceRegistration \
+          -authenticationKeyPath "$API_KEY_PATH" \
+          -authenticationKeyID "$ASC_KEY_ID" \
+          -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+          CODE_SIGN_STYLE="Automatic" \
+          DEVELOPMENT_TEAM="MW98Z2Q68W" \
+          PRODUCT_BUNDLE_IDENTIFIER="com.ajagames.taktiktraning" \
+          archive
+          
+        if [ $? -eq 0 ]; then
+          echo "✅ Archive created successfully!"
+        else
+          echo "❌ Archive failed"
+          exit 1
+        fi
+    
+    - name: Interactive Export and Upload
+      env:
+        APPLE_ID: ${{ github.event.inputs.apple_id }}
+        APP_PASSWORD: ${{ github.event.inputs.app_password }}
+        ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+      run: |
+        cd ios
+        
+        echo "🎯 Interactive Export - Foundation-first approach"
+        echo "💡 Using pre-authenticated Apple ID for export"
+        
+        # Create export.plist with automatic signing
+        cat > export.plist << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>method</key>
+          <string>app-store-connect</string>
+          <key>teamID</key>
+          <string>MW98Z2Q68W</string>
+          <key>signingStyle</key>
+          <string>automatic</string>
+          <key>uploadBitcode</key>
+          <false/>
+          <key>uploadSymbols</key>
+          <true/>
+        </dict>
+        </plist>
+        EOF
+        
+        # Add Apple ID to keychain (using pre-authenticated credentials)
+        echo "🔐 Adding Apple ID to keychain for export..."
+        security add-generic-password -a "$APPLE_ID" -w "$APP_PASSWORD" -s "deliver.apple.com"
+        
+        # Export with pre-authenticated session
+        echo "🔧 Exporting with pre-authenticated Apple ID..."
+        xcodebuild \
+          -exportArchive \
+          -archivePath ./build/TaktikTräning.xcarchive \
+          -exportPath ./build \
+          -exportOptionsPlist ./export.plist
+        
+        if [ $? -eq 0 ]; then
+          echo "✅ Export succeeded!"
+          
+          # Find IPA file
+          IPA_FILE=$(find ./build -name "*.ipa" | head -1)
+          
+          if [ -f "$IPA_FILE" ]; then
+            echo "📦 IPA found: $IPA_FILE"
+            
+            # Upload to TestFlight using pre-authenticated credentials
+            echo "🚀 Uploading to TestFlight with pre-authenticated session..."
+            
+            xcrun altool \
+              --upload-app \
+              --type ios \
+              --file "$IPA_FILE" \
+              --username "$APPLE_ID" \
+              --password "$APP_PASSWORD"
+            
+            if [ $? -eq 0 ]; then
+              echo "🎉 SUCCESS! TaktikTräning uploaded to TestFlight!"
+              echo "📱 Check TestFlight app on your iPhone in 5-10 minutes!"
+              echo "🏆 Interactive GitHub Actions deployment works!"
+            else
+              echo "❌ TestFlight upload failed"
+              exit 1
+            fi
+          else
+            echo "❌ No IPA file found after export"
+            exit 1
+          fi
+        else
+          echo "❌ Export failed"
+          exit 1
+        fi
+    
+    - name: Cleanup
+      if: always()
+      run: |
+        # Remove sensitive files
+        rm -f ios/AuthKey_*.p8
+        rm -f ios/export.plist
+        
+        echo "🧹 Cleanup completed"
+        echo "🎯 Interactive GitHub Actions deployment finished"
