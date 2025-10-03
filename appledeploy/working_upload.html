@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppleDeploy - Working Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-section {
+            margin: 2rem 0;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 2rem;
+            border: 3px dashed #667eea;
+            border-radius: 20px;
+            background: #f8f9ff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+        }
+        
+        .file-input:focus {
+            outline: none;
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        
+        .file-info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #e8f5e8;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .file-info.show {
+            display: block;
+        }
+        
+        .auth-form {
+            text-align: left;
+            margin: 2rem 0;
+            display: none;
+        }
+        
+        .auth-form.show {
+            display: block;
+        }
+        
+        .form-group {
+            margin: 1rem 0;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .deploy-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .deploy-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+        }
+        
+        .deploy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin: 2rem 0;
+            display: none;
+        }
+        
+        .status.show {
+            display: block;
+        }
+        
+        .log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🍎 AppleDeploy</h1>
+        <p class="subtitle">Working Upload - Zip to TestFlight</p>
+        
+        <div class="upload-section">
+            <input type="file" id="file-input" accept=".zip,.xcarchive" class="file-input">
+            
+            <div class="file-info" id="file-info">
+                <h3>📦 File Selected:</h3>
+                <p id="file-name"></p>
+                <p id="file-size"></p>
+            </div>
+        </div>
+        
+        <div class="auth-form" id="auth-form">
+            <h3>🔐 Apple Authentication</h3>
+            
+            <div class="form-group">
+                <label>Apple ID</label>
+                <input type="email" id="apple-id" value="jeromenilssonaja@gmail.com">
+            </div>
+            
+            <div class="form-group">
+                <label>App-Specific Password</label>
+                <input type="password" id="app-password" placeholder="xxxx-xxxx-xxxx-xxxx">
+                <small style="color: #666;">Create at appleid.apple.com → Security</small>
+            </div>
+        </div>
+        
+        <button class="deploy-btn" id="deploy-btn" disabled>
+            📋 Select ZIP file first
+        </button>
+        
+        <div class="status" id="status">
+            <h3>🚀 Deployment Status</h3>
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedFile = null;
+        let deploymentId = null;
+        
+        // Real file upload handling
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                
+                // Show file info
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-size').textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+                document.getElementById('file-info').classList.add('show');
+                
+                // Show auth form
+                document.getElementById('auth-form').classList.add('show');
+                
+                // Update button
+                validateForm();
+            }
+        });
+        
+        // Form validation
+        document.getElementById('apple-id').addEventListener('input', validateForm);
+        document.getElementById('app-password').addEventListener('input', validateForm);
+        
+        function validateForm() {
+            const hasFile = selectedFile !== null;
+            const hasAppleId = document.getElementById('apple-id').value.trim();
+            const hasPassword = document.getElementById('app-password').value.trim();
+            
+            const deployBtn = document.getElementById('deploy-btn');
+            
+            if (hasFile && hasAppleId && hasPassword) {
+                deployBtn.disabled = false;
+                deployBtn.textContent = '🚀 Deploy to TestFlight';
+                deployBtn.onclick = startRealDeployment;
+            } else if (hasFile && hasAppleId) {
+                deployBtn.disabled = true;
+                deployBtn.textContent = '🔑 Enter app-specific password';
+            } else if (hasFile) {
+                deployBtn.disabled = true;
+                deployBtn.textContent = '📧 Enter Apple ID';
+            } else {
+                deployBtn.disabled = true;
+                deployBtn.textContent = '📦 Select ZIP file first';
+            }
+        }
+        
+        function startRealDeployment() {
+            if (!selectedFile) {
+                alert('Please select a ZIP file first');
+                return;
+            }
+            
+            const appleId = document.getElementById('apple-id').value;
+            const appPassword = document.getElementById('app-password').value;
+            
+            if (!appleId || !appPassword) {
+                alert('Please fill in Apple ID and app-specific password');
+                return;
+            }
+            
+            // Show status
+            document.getElementById('status').classList.add('show');
+            const log = document.getElementById('log');
+            
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('project_file', selectedFile);
+            formData.append('apple_id', appleId);
+            formData.append('app_password', appPassword);
+            formData.append('team_id', 'MW98Z2Q68W');
+            formData.append('bundle_id', 'com.ajagames.taktiktraning');
+            
+            log.innerHTML = '[' + new Date().toLocaleTimeString() + '] 🚀 Starting real deployment to Mac server...<br>';
+            
+            // Send to backend
+            fetch('/api/deploy/live', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.deployment_id) {
+                    deploymentId = data.deployment_id;
+                    log.innerHTML += '[' + new Date().toLocaleTimeString() + '] ✅ Deployment started: ' + deploymentId + '<br>';
+                    
+                    // Monitor progress
+                    monitorDeployment(deploymentId);
+                } else {
+                    log.innerHTML += '[' + new Date().toLocaleTimeString() + '] ❌ Failed to start deployment<br>';
+                }
+            })
+            .catch(error => {
+                log.innerHTML += '[' + new Date().toLocaleTimeString() + '] ❌ Error: ' + error + '<br>';
+            });
+        }
+        
+        function monitorDeployment(deploymentId) {
+            const log = document.getElementById('log');
+            
+            function checkStatus() {
+                fetch(`/api/deployment/${deploymentId}/live-status`)
+                .then(response => response.json())
+                .then(data => {
+                    // Add new logs
+                    if (data.logs) {
+                        data.logs.forEach(logEntry => {
+                            const time = new Date(logEntry.timestamp).toLocaleTimeString();
+                            const level = logEntry.level === 'error' ? '❌' : logEntry.level === 'success' ? '✅' : '📋';
+                            log.innerHTML += `[${time}] ${level} ${logEntry.message}<br>`;
+                        });
+                        
+                        // Auto scroll
+                        log.scrollTop = log.scrollHeight;
+                    }
+                    
+                    // Check if completed
+                    if (data.status === 'completed') {
+                        log.innerHTML += '[' + new Date().toLocaleTimeString() + '] 🎉 DEPLOYMENT COMPLETED!<br>';
+                        alert('🎉 SUCCESS!\n\nYour app has been deployed to TestFlight!\nCheck the TestFlight app on your iPhone in 5-10 minutes!');
+                    } else if (data.status === 'failed') {
+                        log.innerHTML += '[' + new Date().toLocaleTimeString() + '] ❌ Deployment failed<br>';
+                    } else {
+                        // Continue monitoring
+                        setTimeout(checkStatus, 2000);
+                    }
+                })
+                .catch(error => {
+                    log.innerHTML += '[' + new Date().toLocaleTimeString() + '] ❌ Status check error: ' + error + '<br>';
+                    setTimeout(checkStatus, 5000);
+                });
+            }
+            
+            checkStatus();
+        }
+    </script>
+</body>
+</html>
