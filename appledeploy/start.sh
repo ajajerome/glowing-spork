@@ -11,10 +11,20 @@ if ! command -v python3 &> /dev/null; then
     sudo apt install -y python3 python3-pip
 fi
 
-# Check if Flask is installed
-if ! python3 -c "import flask" &> /dev/null; then
-    echo "📦 Installing Flask dependencies..."
-    pip3 install -r requirements.txt
+# Create virtual environment for dependencies
+if [ ! -d "venv" ]; then
+    echo "📦 Creating Python virtual environment..."
+    python3 -m venv venv
+fi
+
+# Activate virtual environment
+echo "🔧 Activating virtual environment..."
+source venv/bin/activate
+
+# Install dependencies in virtual environment
+if ! python -c "import flask" &> /dev/null; then
+    echo "📦 Installing Flask dependencies in venv..."
+    pip install -r requirements.txt
 fi
 
 echo "✅ Dependencies ready"
@@ -24,5 +34,5 @@ echo "💡 Open browser to: http://localhost:5000"
 echo "🎯 Ready to deploy iOS apps to TestFlight!"
 echo ""
 
-# Start server
-python3 server.py
+# Start server with virtual environment
+python server.py
