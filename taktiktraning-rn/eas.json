@@ -1,0 +1,34 @@
+{
+  "cli": {
+    "version": ">= 5.9.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "ios": {
+        "bundleIdentifier": "com.ajagames.taktiktraning"
+      },
+      "android": {
+        "package": "com.ajagames.taktiktraning"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "jeromenilssonaja@gmail.com",
+        "ascAppId": "6753348776",
+        "appleTeamId": "MW98Z2Q68W"
+      }
+    }
+  }
+}
