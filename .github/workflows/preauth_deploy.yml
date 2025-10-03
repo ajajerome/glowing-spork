@@ -144,20 +144,16 @@ jobs:
         </plist>
         EOF
         
-        # Export with same API key approach as archive
-        echo "🔧 Exporting with API key authentication (same as archive)..."
+        # Export requires Apple ID login (different from archive)
+        echo "🔐 Adding Apple ID to keychain for export..."
+        security add-generic-password -a "$APPLE_ID" -w "$APP_PASSWORD" -s "deliver.apple.com"
         
-        # Use same authentication method that worked for archive
+        echo "🔧 Exporting with Apple ID authentication..."
         xcodebuild \
           -exportArchive \
           -archivePath ./build/TaktikTräning.xcarchive \
           -exportPath ./build \
-          -exportOptionsPlist ./export.plist \
-          -authenticationKeyPath "$API_KEY_PATH" \
-          -authenticationKeyID "$ASC_KEY_ID" \
-          -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-          -allowProvisioningUpdates \
-          -allowProvisioningDeviceRegistration
+          -exportOptionsPlist ./export.plist
         
         # Upload to TestFlight
         echo "🚀 Uploading to TestFlight..."
