@@ -51,17 +51,17 @@ class iOSExportAutomator:
     
     def create_export_plist(self, profile_name):
         """
-        Foundation-first: Create export options plist with correct configuration
+        Foundation-first: Create export options plist with automatic signing
+        GitHub Actions can't install profiles, so use automatic approach
         """
-        print(f"📋 Creating export.plist for profile: {profile_name}")
+        print(f"📋 Creating export.plist with automatic signing...")
         
         export_config = {
-            "method": "app-store",
+            "method": "app-store-connect",  # Use app-store-connect (not deprecated)
             "teamID": self.team_id,
-            "signingStyle": "manual",
-            "provisioningProfiles": {
-                self.bundle_id: profile_name
-            }
+            "signingStyle": "automatic",    # Let xcodebuild find profiles automatically
+            "uploadBitcode": False,
+            "uploadSymbols": True
         }
         
         plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -74,11 +74,10 @@ class iOSExportAutomator:
     <string>{export_config['teamID']}</string>
     <key>signingStyle</key>
     <string>{export_config['signingStyle']}</string>
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>{self.bundle_id}</key>
-        <string>{profile_name}</string>
-    </dict>
+    <key>uploadBitcode</key>
+    <false/>
+    <key>uploadSymbols</key>
+    <true/>
 </dict>
 </plist>"""
         
