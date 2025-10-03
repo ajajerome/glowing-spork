@@ -282,7 +282,7 @@ class AppleDeployLiveBackend:
     def __init__(self):
         self.temp_dir = tempfile.mkdtemp(prefix="appledeploy_live_")
         
-    def handle_live_deployment(self, project_file, auth_data, deployment_id):
+    def handle_live_deployment(self, auth_data, deployment_id):
         """
         Foundation-first: Handle real deployment to Mac server
         """
@@ -405,7 +405,7 @@ def live_deploy():
         # Start live deployment in background
         deployment_thread = threading.Thread(
             target=live_backend.handle_live_deployment,
-            args=(project_file, auth_data, deployment_id)
+            args=(auth_data, deployment_id)
         )
         deployment_thread.start()
         
