@@ -375,6 +375,7 @@ def live_deploy():
     """
     Foundation-first: Real deployment to Mac server
     """
+    print("🚀 POST request received at /api/deploy/live")
     try:
         # Get uploaded file
         if 'project_file' not in request.files:
