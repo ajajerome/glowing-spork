@@ -87,7 +87,7 @@ const LoadingScreen = () => (
   >
     <View style={styles.loadingContainer}>
       <Text style={styles.loadingTitle}>⚽</Text>
-      <Text style={styles.loadingText}>TaktikTräning</Text>
+      <Text style={styles.loadingText}>SambaIQ</Text>
       <Text style={styles.loadingSubtext}>Duolingo för Fotboll</Text>
     </View>
   </LinearGradient>

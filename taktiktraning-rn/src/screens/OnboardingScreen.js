@@ -59,7 +59,7 @@ const OnboardingScreen = ({ onComplete }) => {
 
   const renderStep1 = () => (
     <View style={styles.stepContainer}>
-      <Text style={styles.title}>⚽ Välkommen till TaktikTräning!</Text>
+      <Text style={styles.title}>⚽ Välkommen till SambaIQ!</Text>
       <Text style={styles.subtitle}>Duolingo för Fotboll</Text>
       <Text style={styles.description}>
         Lär dig fotbollstaktik på 5 minuter om dagen!

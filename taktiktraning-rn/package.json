@@ -1,7 +1,7 @@
 {
-  "name": "taktiktraning",
+  "name": "sambaiq",
   "version": "1.0.0",
-  "description": "Duolingo för Fotboll - AI-driven tactical training for children 7-16",
+  "description": "SambaIQ - Duolingo för Fotboll - AI-driven tactical training for children 7-16",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
