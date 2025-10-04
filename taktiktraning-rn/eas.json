@@ -15,10 +15,10 @@
     },
     "production": {
       "ios": {
-        "bundleIdentifier": "com.ajagames.taktiktraning"
+        "bundleIdentifier": "com.ajagames.sambaiq"
       },
       "android": {
-        "package": "com.ajagames.taktiktraning"
+        "package": "com.ajagames.sambaiq"
       }
     }
   },
@@ -26,7 +26,6 @@
     "production": {
       "ios": {
         "appleId": "jeromenilssonaja@gmail.com",
-        "ascAppId": "6753348776",
         "appleTeamId": "MW98Z2Q68W"
       }
     }
