@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "SambaIQ",
+    "slug": "sambaiq", 
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": ["ios", "android"],
+    "splash": {
+      "backgroundColor": "#2E8B57"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false
+    },
+    "owner": "jappmasterer"
+  }
+}
