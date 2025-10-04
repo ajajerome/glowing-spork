@@ -1,150 +1,194 @@
-# ⚽ SpelSmart - AI-driven Fotbollsträning
+# ⚽ TaktikTräning - Duolingo för Fotboll
 
-**SpelSmart** är en innovativ iOS-app som utvecklar barns spelförståelse genom interaktiva fotbollsscenarier och AI-driven gamification.
+## 🎯 **Vision**
+Världens första micro-learning app för fotbollstaktik som följer barn från 7-16 år med AI-genererat innehåll baserat på SVFF/UEFA standarder och professionella akademi-metoder.
 
-## 🎯 Huvudfunktioner
+## 🚀 **Foundation-First MVP**
 
-### 🧠 **Interaktiva Scenarier**
-- Realistiska matchsituationer på intelligent fotbollsplan
-- Taktiska beslutspunkter med omedelbar feedback
-- Anfall, försvar, omställningar och uppspelssituationer
+### **Core Concept:**
+"Duolingo för Fotboll" - 5-minuters dagliga lektioner som lär barn fotbollstaktik genom interaktiva scenarier på FC-inspirerad fotbollsplan.
 
-### 🎮 **Gamification System**
-- XP-system med exponentiell progression
-- Player Ranks från "Nybörjare" till "Legend"
-- Badge-system med 7 kategorier och 5 seltenhetsnivåer
-- Skill Radar för 8 taktiska färdigheter
+### **Target Audience:**
+- **Primär:** Barn 7-16 år som spelar fotboll
+- **Sekundär:** Föräldrar som vill stödja barnets utveckling
+- **Tertiär:** Fotbollstränare som behöver digitala verktyg
 
-### 🔥 **Dagliga Utmaningar**
-- Specialiserade scenarier med bonus XP
-- Streak-system för konsekvent träning
-- Unika belöningar och exklusiva badges
+## 🎮 **MVP Features**
 
-### 🤖 **AI-driven Analys**
-- Kontextmedveten feedback på beslut
-- Personliga träningsrekommendationer
-- Adaptiv svårighetsgrad baserat på prestationer
-- Detaljerade matchrapporter
+### **1. Onboarding Magic (30 sekunder)**
+- Namn → Ålder → Position → Start
+- Immediate engagement, inga långa tutorials
+- Personlig profil skapas direkt
 
-## 🎨 Design
+### **2. Första 3 Magiska Scenarierna**
+- **"Ditt Första Mål"** - Spatial awareness
+- **"Hjälp din Kompis"** - Teamwork och passing  
+- **"Försvara Målet"** - Defensive positioning
 
-- **Färgpalett:** Limegrön (#A8E063) och Djupblå (#1E3C72)
-- **Typografi:** Baloo 2 (rubriker), Inter (brödtext)
-- **Layout:** Kortbaserad, swipevänlig design
-- **Animationer:** Mikroanimationer för engagement
+### **3. Duolingo-Inspired Gamification**
+- XP system (50 XP per scenario)
+- Badge collection (Första Mål, Team Player, Vägg)
+- Daily streaks
+- Level progression
 
-## 🏗️ Teknisk Stack
+### **4. FC-Inspired Design**
+- Klassisk grön fotbollsplan (igenkännbar)
+- Isometrisk perspektiv (som FC-serien)
+- Enkla spelare-ikoner med nummer
+- Retro-charm med modern touch
 
-- **Plattform:** iOS 16.0+
-- **Framework:** SwiftUI + SpriteKit
-- **Språk:** Swift 5.0
-- **AI/ML:** Lokal intelligens för rekommendationer
-- **Data:** JSON-baserat innehållssystem
+## 🧒 **Åldersanpassning**
 
-## 📱 Installation & Testning
+### **7-9 år: "Mini Champions"**
+- 7v7 fotbollsplan (mindre)
+- Grundläggande koncept
+- Stora, färgglada UI element
+- Enkla drag & drop interaktioner
 
-Se [TESTING_GUIDE.md](TESTING_GUIDE.md) för detaljerad guide om hur du testar appen på din iPhone.
+### **10-12 år: "Tactical Minds"**  
+- 9v9 fotbollsplan (mellan)
+- Taktiska grunder (formationer)
+- Mer detaljerad plan
+- Komplexa drag movements
 
-### Snabbstart:
+### **13-16 år: "Academy Level"**
+- 11v11 fotbollsplan (full)
+- Avancerad taktik
+- Professionell design
+- Coach-mode features
+
+## 🤖 **AI Content Strategy**
+
+### **Content Sources:**
+- **FIFA/UEFA** officiella manualer
+- **SVFF** spelarutveckling
+- **Barcelona/Ajax/Man City** akademi-metoder
+- **Guardiola/Klopp** moderna taktiker
+- **Forskningsbaserat** innehåll
+
+### **AI Generation Pipeline:**
+1. **Input:** Ålder, skill level, learning objective
+2. **Context:** SVFF/UEFA regler för åldersgrupp
+3. **Generation:** AI skapar taktisk situation
+4. **Validation:** Expert coach review
+5. **Optimization:** Child psychology anpassning
+
+## 🚀 **Development Roadmap**
+
+### **Week 1-2: MVP Core**
+- [x] React Native + Expo setup
+- [x] FC-inspired football pitch component
+- [x] Duolingo-style onboarding
+- [x] First 3 magical scenarios
+- [ ] EAS deployment → TestFlight
+
+### **Week 3-4: Engagement Engine**
+- [ ] Daily lesson structure
+- [ ] Streak system implementation
+- [ ] Badge collection system
+- [ ] Progress tracking
+
+### **Week 5-6: Age Adaptation**
+- [ ] 7v7, 9v9, 11v11 pitch variations
+- [ ] Age-appropriate scenario difficulty
+- [ ] UI scaling for different ages
+- [ ] Parental controls
+
+### **Week 7-8: AI Integration**
+- [ ] OpenAI API integration
+- [ ] Scenario generation system
+- [ ] Content validation pipeline
+- [ ] Personalization engine
+
+## 💰 **Business Model**
+
+### **Freemium Strategy:**
+- **Free:** 3 lessons/day, basic content
+- **Premium ($4.99/månad):** Unlimited lessons, AI content
+- **Family ($9.99/månad):** Up to 4 children
+- **Coach ($19.99/månad):** Team management, custom scenarios
+
+### **Market Potential:**
+- **300+ miljoner barn** spelar fotboll globalt
+- **Föräldrar betalar** för barns utbildning
+- **Fotbollsklubbar** köper träningsverktyg
+- **Global skalbarhet** (fotboll är universellt)
+
+## 🔧 **Technical Stack**
+
+### **Frontend:**
+- **React Native** + Expo
+- **React Native SVG** för fotbollsplan
+- **React Native Gesture Handler** för drag & drop
+- **React Native Reanimated** för animations
+- **Expo Linear Gradient** för FC-style design
+
+### **Backend:**
+- **Node.js** + Express
+- **PostgreSQL** för user data
+- **OpenAI API** för content generation
+- **AWS S3** för asset storage
+
+### **Deployment:**
+- **EAS Build** för iOS/Android builds
+- **EAS Submit** för TestFlight/Play Store
+- **Expo Updates** för OTA updates
+
+## 📱 **Getting Started**
+
+### **Development Setup:**
 ```bash
-git clone https://github.com/ajajerome/glowing-spork.git
-cd glowing-spork/ios
-xcodegen generate
-open Learnfotball.xcodeproj
+# Install dependencies
+npm install
+
+# Start development server
+npx expo start
+
+# Build for iOS
+eas build --platform ios
+
+# Submit to TestFlight
+eas submit --platform ios
 ```
 
-## 🎮 Användning
+### **Testing:**
+```bash
+# Run on iOS simulator
+npx expo start --ios
 
-1. **Skapa Avatar:** Personalisera din spelare
-2. **Spela Scenarier:** Fatta taktiska beslut i realistiska situationer  
-3. **Samla XP & Badges:** Utveckla dina färdigheter
-4. **Dagliga Utmaningar:** Håll din streak vid liv
-5. **Följ Progression:** Se din utveckling i skill radar
+# Run on Android emulator  
+npx expo start --android
 
-## 📊 Målgrupp
+# Test on physical device
+npx expo start --tunnel
+```
 
-- **Primär:** Barn 8-14 år som spelar fotboll
-- **Sekundär:** Tränare och föräldrar som vill stödja utveckling
-- **Fokus:** Spelförståelse och taktiskt tänkande
+## 🎯 **Success Metrics**
 
-## 🛣️ Roadmap
+### **MVP Validation:**
+- **Session completion rate:** >80%
+- **Day 2 retention:** >60%
+- **Day 7 retention:** >40%
+- **Sharing rate:** >20%
 
-- [x] Interaktiva scenarier med beslutspunkter
-- [x] Komplett gamification-system
-- [x] AI-driven feedback och rekommendationer
-- [x] Dagliga utmaningar
-- [ ] Coach-läge för tränare/föräldrar
-- [ ] Multiplayer-scenarier
-- [ ] AR-funktioner för verklig träning
-- [ ] Säsongssystem med ranking
-
-## 🤝 Bidrag
-
-Projektet är under aktiv utveckling. Feedback och förslag är välkomna!
-
-## 📄 Licens
-
-Detta projekt utvecklas för utbildningssyfte med fokus på barns fotbollsutveckling.
+### **Engagement Targets:**
+- **Daily active users:** 1000+ (Month 3)
+- **Average session time:** 8-12 minutes
+- **Weekly retention:** >70%
+- **Premium conversion:** >15%
 
 ---
 
-**Utvecklat med ❤️ för nästa generation fotbollsspelare**
+## 🏆 **Foundation-First Philosophy**
 
-## Overview
-Learnfotball is a minimal iOS MVP using SwiftUI + SpriteKit. It renders a simple training drill where you drag a player to control interactions with a moving ball and collect cones. The HUD shows score and a countdown timer.
+**"Första intryck är allt - vi har 30 sekunder att fånga barnets uppmärksamhet och 5 minuter att få dem att älska fotbollstaktik."**
 
-## What’s implemented
-- SpriteKit `TrainingScene` with:
-  - Ball physics (bounce, friction, damping)
-  - Cones that are collected on contact (score increases)
-  - Player node you can drag by touch
-  - Score and timer HUD
-- SwiftUI `ContentView` with:
-  - Tabbar med tre flikar: Träna, Avatar, Tränare
-  - `TrainingView` visar scen, Start/Reset, frågesheet efter drill
-  - `AvatarView` för skapande av avatar (färg, frisyr) + födelsedatum
-  - `TrainerEditorView` för att skapa frågeutkast lokalt
-- XcodeGen `project.yml` for reproducible project generation
-- GitHub Actions CI that can build a simulator artifact and (optionally) upload to TestFlight via Fastlane when secrets are present
-- Fastlane lanes: `sim` for simulator build artifact, `ci` for tests + build + TestFlight
+**Varje beslut baseras på:**
+- **Child psychology research**
+- **Duolingo engagement principles** 
+- **Professional football methodology**
+- **Real user testing and feedback**
 
-## What’s next (suggested)
-- Add multiple drills and a drill selector (passing config into `TrainingScene`)
-- Basic progression and scoring persistence
-- Sound effects and visual feedback
-- AI-driven coaching prompts (voice/text) based on performance
-- Polish UI and support various device sizes dynamically
- - Åldersstyrd frågebank från CMS, tränarkonton och delning
+---
 
-## Run locally
-1) Generate the Xcode project:
-```bash
-cd ios
-xcodegen generate
-```
-2) Open the generated `.xcodeproj` in Xcode and run on a simulator.
-
-## CI / Artifacts
-- GitHub Actions workflow (`.github/workflows/ios.yml`) körs på push och dagligen 05:00 UTC.
-- Simulator‑build laddas upp som artifact (`simulator_app.zip`).
-- Med TestFlight‑hemligheter bygger och publicerar `testflight` via Fastlane.
-- Fastlane bump: buildnummer sätts automatiskt utifrån tidsstämpel i `ci`.
-## Publicering – hemligheter (GitHub Actions)
-- `ASC_ISSUER_ID`, `ASC_KEY_ID`, `ASC_API_KEY_P8`
-- `TEAM_ID`, `BUNDLE_ID`
-- `SIGNING_CERT_P12`, `SIGNING_CERT_PASSWORD`, `PROVISIONING_PROFILE`
-
-
-## Controls
-- Start: begins the 30s drill and launches the ball
-- Reset: resets score, timer, ball, and cones
-- Drag anywhere: move the player to influence the ball and collect cones
-
-## Gamification & Tränare (MVP)
-- Avatar: namn, åldersgrupp, födelsedatum, färger och frisyr (lagras lokalt).
-- Ålderslogik: åldersband härleds från födelsedatum och används för frågor.
-- Frågor: bundlad `questions.json` filtreras per åldersband; visas efter drill.
-- Tränare: skapa egna frågeutkast i appen (lokal lagring), för senare publicering via CMS.
-
-## Tech
-- SwiftUI, SpriteKit, XcodeGen, Fastlane, GitHub Actions
+*TaktikTräning - Där fotbollsdrömmar börjar med smart lärande! ⚽🧠*
