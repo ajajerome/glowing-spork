@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "SambaIQ",
+    "slug": "sambaiq",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#2E8B57"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ajagames.sambaiq"
+    },
+    "android": {
+      "package": "com.ajagames.sambaiq"
+    },
+    "owner": "jappmasterer"
+  }
+}
