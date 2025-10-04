@@ -13,14 +13,7 @@
         "simulator": true
       }
     },
-    "production": {
-      "ios": {
-        "bundleIdentifier": "com.ajagames.sambaiq"
-      },
-      "android": {
-        "package": "com.ajagames.sambaiq"
-      }
-    }
+    "production": {}
   },
   "submit": {
     "production": {

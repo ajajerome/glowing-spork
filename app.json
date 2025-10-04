@@ -35,8 +35,6 @@
       }
     },
     "owner": "jappmasterer",
-    "plugins": [
-      "expo-router"
-    ]
+    "plugins": []
   }
 }
