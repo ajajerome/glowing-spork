@@ -191,4 +191,4 @@ npx expo start --tunnel
 
 ---
 
-*TaktikTräning - Där fotbollsdrömmar börjar med smart lärande! ⚽🧠*
+*TaktikTräning - Där fotbollsdrömmar börjar med smart lärande! ⚽🧠*# Trigger Expo build
